@@ -1,0 +1,72 @@
+.mytable {
+	width: 80%;
+	margin-left: 300px;
+	box-shadow: 0 12px 16px 0 rgba(45, 45, 42, 0.24), 0 17px 50px 12px
+		rgba(25, 23, 16, 0.19);
+	border-radius: 15px;
+}
+
+.tablename {
+	font-size: 48px;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.mynav dl dd:hover {
+	background-color: #009688
+}
+
+.findinput {
+	height: 50px;
+	float: right;
+	margin-right: 5%;
+	float: right;
+}
+
+#inputid {
+	width: 280px;
+	height: 35px;
+	float: right;
+}
+
+#tb tr td {
+	font-size: 18px;
+	text-align: center;
+}
+
+#th tr th {
+	font-size: 18px;
+	text-align: center;
+}
+
+#navhead {
+	width: 100%;
+	background-color: #34363e;
+	color: white;
+	font-size: 24px;
+	float: right;
+	padding: 10px;
+	text-align: center;
+}
+
+#saleth tr th {
+	padding-right: 91px
+}
+
+#myperinfo {
+	width: 60%;
+	height: 80%;
+	background-color: #e8e8e8;
+	position: absolute;
+	margin-left: 25%;
+	margin-top: 7%;
+	border-radius: 20px;
+	box-shadow: 0 12px 16px 0 rgba(45, 45, 42, 0.24), 0 17px 50px 12px
+		rgba(25, 23, 16, 0.19);
+}
+
+.myperinfodiv {
+	margin-left: 13%;
+	padding: 100px;
+	margin-top: 7%
+}

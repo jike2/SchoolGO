@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Layui</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../css/layui.css" media="all">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/utilSession.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/index.js"></script>
+<link rel="stylesheet" href="../css/table.css">
+</head>
+
+<body onload="queryAll()">
+	<div id="navhead">
+		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
+	</div>
+	<div class="nav">
+		<ul class="mynav layui-nav layui-nav-tree layui-inline "
+			lay-filter="demo " style="margin-right: 10px;">
+			<li class="layui-nav-item layui-nav-itemed "><a
+				href="javascript:; ">票务管理</a>
+				<dl class="layui-nav-child ">
+					<dd>
+						<a href="index.html">售&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp票</a>
+					</dd>
+					<dd>
+						<a href="index_sales.html">撤&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp单</a>
+					</dd>
+				</dl></li>
+			<li class="layui-nav-item"><a href="javascript:; ">个人信息管理</a>
+				<dl class="layui-nav-child ">
+					<dd>
+						<a href="index_perinfo.html">个人信息</a>
+					</dd>
+					<dd>
+						<a href="index_uppwd.html">修改密码</a>
+					</dd>
+				</dl></li>
+			<li class="layui-nav-item "><a href="index_mysales.html">本人订单</a></li>
+			<li class="layui-nav-item "><a href="index_census.html">个人订单统计</a></li>
+			<li class="layui-nav-item "><a href=""  data-toggle="modal" data-target="#Exit">退出登录</a></li>
+		</ul>
+	</div>
+	<!-- 表格 -->
+	
+	<table class="table table-striped mytable">
+	<caption class="tablename">售&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp票</caption>
+	
+		<thead id="th">
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th><input type="text" id="inputid" placeholder="请输入门票编号"></th>
+				<th><button onclick="findByID()" class="btn btn-success">查询</button></th>
+			</tr>
+			<tr>
+				<th>编号</th>
+				<th>分类</th>
+				<th>单价</th>
+				<th>库存</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="tb"></tbody>
+	</table>
+	
+	<!-- 模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">售&nbsp&nbsp&nbsp票</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<span id="p_id"></span>
+						</p>
+						<br>
+						<p>
+							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<span id="p_type"></span>
+						</p>
+						<br>
+						<p>
+							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<span id="p_price"></span>
+						</p>
+						<br>
+						<p>
+							购买数量：<input type="text" id="p_num" onblur="summoney()" onkeyup="summoney()">
+						</p>
+						<br>
+						<p>
+							总&nbsp&nbsp金&nbsp&nbsp额：<b id="money" style="color: red"></b>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="saleTick()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	
+	<!-- 退出登录模态框（Modal） -->
+<div class="modal fade" id="Exit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					退出登录
+				</h4>
+			</div>
+			<div class="modal-body">
+				是否确认退出当前账号
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="exit()">
+					确认退出
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+<script src="../layui.js" charset="utf-8 "></script>
+<script>
+layui.use('element', function() {
+	var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	//监听导航点击
+	element.on('nav(demo)', function(elem) {
+		//console.log(elem)
+		layer.msg(elem.text());
+	});
+});
+
+
+</script>
+
+</html>

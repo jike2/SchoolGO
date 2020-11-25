@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Layui</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../css/layui.css" media="all">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/utilSession.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/adminindex.js"></script>
+<link rel="stylesheet" href="../css/table.css">
+
+<style type="text/css">
+.colos1 {
+	color: red;
+}
+
+.colos2 {
+	color: green;
+}
+</style>
+</head>
+
+<body onload="adminqueryAll()">
+	<div id="navhead">
+		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
+	</div>
+	<div class="nav">
+		<ul class="mynav layui-nav layui-nav-tree layui-inline "
+			lay-filter="demo " style="margin-right: 10px;">
+			<li class="layui-nav-item "><a href="adminindex.html">门票管理</a></li>
+			<li class="layui-nav-item "><a href="admin_mgworker.html">员工管理</a></li>
+			<li class="layui-nav-item "><a href="">订单查询</a></li>
+			<li class="layui-nav-item "><a href="">订单统计</a></li>
+			<li class="layui-nav-item "><a href="" data-toggle="modal"
+				data-target="#Exit">退出登录</a></li>
+		</ul>
+	</div>
+
+	<!-- 表格 -->
+
+	<table class="table table-striped mytable">
+		<caption class="tablename">门&nbsp票&nbsp管&nbsp理</caption>
+
+		<thead id="th">
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th><input type="text" id="inputid" placeholder="请输入门票编号"></th>
+				<th><button style="float: left;" onclick="adminfindByID()"
+						class="btn btn-success">查询</button>
+					<button style="float: left; margin-left: 10px"
+						class="btn btn-success" data-toggle="modal" data-target="#addtype">添加</button></th>
+			</tr>
+			<tr>
+				<th>编号</th>
+				<th>分类</th>
+				<th>单价</th>
+				<th>库存</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="tb"></tbody>
+	</table>
+
+	<!-- 入库模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">入&nbsp&nbsp&nbsp库</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input type="text"
+								id="addp_id" name="p_id" disabled>
+						</p>
+						<br>
+						<p>
+							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<input type="text"
+								id="addp_type" name="p_type" disabled>
+						</p>
+						<br> <br>
+						<p>
+							入库数量：<input type="text" name="p_num" id="addp_num">
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="addnum()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!-- 删除模态框 -->
+	<div class="modal fade" id="deltype" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">删&nbsp&nbsp&nbsp除</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input type="text"
+								id="delp_id" name="p_id" disabled>
+						</p>
+						<br>
+						<p>
+							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<input type="text"
+								id="delp_type" name="p_type" disabled>
+						</p>
+						<br>
+						<p>
+							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<input type="text"
+								id="delp_price" name="p_price" disabled>
+						</p>
+						<br>
+						<p>
+							数&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp量：<input type="text"
+								id="delp_num" name="p_num" disabled>
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="delTick()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!-- 修改模态框 -->
+	<div class="modal fade" id="uptype" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">修&nbsp&nbsp&nbsp改</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="uptype"
+								type="text" name="p_id" disabled>
+						</p>
+						<br>
+						<p>
+							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<input id="upp_type"
+								type="text" name="p_type" onblur="queryname()"
+								onkeyup="queryname()"><br>
+						<p id="upverifyType" style="text-align: center;">分类名时验证</p>
+						</p>
+						<p>
+							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<input id="upp_price"
+								type="text" name="p_price">
+						</p>
+						<br>
+						<p>
+							数&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp量：<input id="upp_num"
+								type="text" name="p_num" disabled>
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="upTick()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+
+
+	<!-- 添加模态框 -->
+	<div class="modal fade" id="addtype" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">添&nbsp&nbsp&nbsp加</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<br>
+						<p>
+							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<input type="text"
+								id="addp_type111" name="addp_type" onblur="addqueryname()"
+								onkeyup="addqueryname()"><br>
+						<p id="addverifyType" style="text-align: center;">分类名验证</p>
+						</p>
+						<p>
+							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<input id="addp_price"
+								type="text">
+						</p>
+						<br>
+						<p>
+							数&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp量：<input id="addp_num111"
+								type="text">
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="addtick()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	<!-- 退出登录模态框（Modal） -->
+	<div class="modal fade" id="Exit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+				</div>
+				<div class="modal-body">是否确认退出当前账号</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="exit()">
+						确认退出</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+</body>
+<script src="../layui.js" charset="utf-8 "></script>
+<script>
+	layui.use('element', function() {
+		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		//监听导航点击
+		element.on('nav(demo)', function(elem) {
+			//console.log(elem)
+			layer.msg(elem.text());
+		});
+	});
+
+	//修改门票
+	function upTick() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$
+				.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=uptick",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						p_id : $("#upp_id").val(),
+						p_type : $("#upp_type").val(),
+						p_price : $("#upp_price").val()
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data == true) {
+							alert("修改成功")
+							$(location).attr("href", "adminindex.html");
+						} else {
+							alert("修改失败")
+						}
+
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//查询门票是否存在
+	function queryname() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		if ($("#upp_type").val() == "") {
+			$("#upverifyType").html("不能为空")
+		} else {
+			$
+					.ajax({
+						//请求的路径
+						url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickByName",
+						//传输数据的类型
+						dataType : "json",
+						data : {
+							p_type : $("#upp_type").val()
+						},
+						//get请求的方式
+						//type : "GET",
+						//post请求的方式
+						type : "post",
+						//get方式请求后台的格式设置
+						//contentType : "application/json;charset=UTF-8",
+						//post方式请求后台的格式设置
+						contentType : "application/x-www-form-urlencoded",
+						beforeSend : function(request) {
+							request.setRequestHeader("userid", userid);
+						},
+						async : false,
+						xhrFields : {
+							withCredentials : true
+						},
+						//是否需要缓冲
+						cache : false,
+						//成功的回调函数
+						success : function(data) {
+							console.log(data)
+							//alert("请求成功" + data.student2.name)
+							if (data.flag) {
+								alert("您还未登录，请登录")
+								$(location).attr("href", "login.html");
+							}
+							;
+
+							if (data == true) {
+								$("#upverifyType").removeClass("colos1");
+								$("#upverifyType").addClass("colos2");
+								$("#upverifyType").html(
+										"&nbsp&nbsp&nbsp该门票分类可使用")
+							} else {
+								$("#upverifyType").removeClass("colos2");
+								$("#upverifyType").addClass("colos1");
+								$("#upverifyType").html(
+										"&nbsp&nbsp&nbsp该门票分类已存在")
+							}
+						},
+						//报错的回调函数
+						error : function(request) {
+							alert("服务器加载中......")
+						}
+					})
+		}
+	}
+	//查询门票是否存在
+	function addqueryname() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		if ($("#addp_type111").val() == "") {
+			$("#addverifyType").html("不能为空")
+		} else {
+			$
+					.ajax({
+						//请求的路径
+						url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickByName",
+						//传输数据的类型
+						dataType : "json",
+						data : {
+							p_type : $("#addp_type111").val()
+						},
+						//get请求的方式
+						//type : "GET",
+						//post请求的方式
+						type : "post",
+						//get方式请求后台的格式设置
+						//contentType : "application/json;charset=UTF-8",
+						//post方式请求后台的格式设置
+						contentType : "application/x-www-form-urlencoded",
+						beforeSend : function(request) {
+							request.setRequestHeader("userid", userid);
+						},
+						async : false,
+						xhrFields : {
+							withCredentials : true
+						},
+						//是否需要缓冲
+						cache : false,
+						//成功的回调函数
+						success : function(data) {
+							console.log(data)
+							//alert("请求成功" + data.student2.name)
+							if (data.flag) {
+								alert("您还未登录，请登录")
+								$(location).attr("href", "login.html");
+							}
+							;
+
+							if (data == true) {
+								$("#addverifyType").removeClass("colos1");
+								$("#addverifyType").addClass("colos2");
+								$("#addverifyType").html(
+										"&nbsp&nbsp&nbsp该门票分类可使用")
+							} else {
+								$("#addverifyType").removeClass("colos2");
+								$("#addverifyType").addClass("colos1");
+								$("#addverifyType").html(
+										"&nbsp&nbsp&nbsp该门票分类已存在")
+							}
+						},
+						//报错的回调函数
+						error : function(request) {
+							alert("服务器加载中......")
+						}
+					})
+		}
+	}
+	//添加
+	function addtick() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=addTick",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						p_type : $("#addp_type111").val(),
+						p_price : $("#addp_price").val(),
+						p_num : $("#addp_num111").val()
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						if (data == true) {
+							alert("添加成功")
+							$(location).attr("href", "adminindex.html");
+						} else {
+							alert("添加失败")
+						}
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	
+	//入库
+	function addnum() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=addticknum",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						p_id : $("#addp_id").val(),
+						p_num : $("#addp_num").val(),
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data == true) {
+							alert("入库成功")
+							$(location).attr("href", "adminindex.html");
+						} else {
+							alert("入库失败")
+						}
+
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+</script>
+
+</html>
