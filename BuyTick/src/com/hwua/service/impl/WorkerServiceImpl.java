@@ -17,9 +17,8 @@ public class WorkerServiceImpl implements WorkerService{
 	}
 	//修改自己的密码
 	@Override
-	public boolean upMyPwd(String pwd) {
-		
-		return wd.upMyPwd(pwd);
+	public boolean upWorker(Worker worker) {
+		return wd.upWorker(worker);
 	}
 	//查询全部员工
 	@Override
@@ -42,6 +41,22 @@ public class WorkerServiceImpl implements WorkerService{
 	public List<Worker> findWorkByIDpage(String find, int page, int limit) {
 		List<Worker> list = wd.findWorkByIDpage(find,page,limit);
 		return list;
+	}
+	//根据工号查询员工
+	@Override
+	public Worker findWorkOne(String find) {
+		Worker worker=wd.findWorkOne(find);//根据工号查询员工
+		return worker;
+	}
+	@Override
+	public boolean delWorker(String id) {
+		boolean b=wd.delWorker(id);//删除员工
+		return b;
+	}
+	@Override
+	public boolean addWorker(Worker worker) {
+		boolean b=wd.addWorker(worker);
+		return b;
 	}
 
 }

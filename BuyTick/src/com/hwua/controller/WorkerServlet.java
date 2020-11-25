@@ -2,6 +2,7 @@ package com.hwua.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,16 @@ public class WorkerServlet extends HttpServlet {
 			this.querworkerAll(request,response);
 		}else if(method.equals("findWorkByID")) {
 			this.findWorkByID(request,response);
+		}else if(method.equals("upworker")) {
+			this.upworker(request,response);
+		}else if(method.equals("resetworkerpwd")) {
+			this.resetworkerpwd(request,response);
+		}else if(method.equals("delworker")) {
+			this.delworker(request,response);
+		}else if(method.equals("findWorkOne")) {
+			this.findWorkOne(request,response);
+		}else if(method.equals("addworker")) {
+			this.addworker(request,response);
 		}
 	}
 
@@ -58,17 +69,28 @@ public class WorkerServlet extends HttpServlet {
 		String lapwd = request.getParameter("lapwd");
 		String pwd = request.getParameter("newpwd");
 		Worker worker = wsi.login(Tools.username);
+		
 		if(!lapwd.equals(worker.getW_pwd())) {
 			Map<String,Boolean> map = new HashMap<String, Boolean>();
 			System.out.println("密码错误");
 			map.put("pwdflag", false);
 			String jsonString = JSON.toJSONString(map);
 			response.getWriter().write(jsonString);
-		}else if(wsi.upMyPwd(pwd)){
-			Map<String,Boolean> map = new HashMap<String, Boolean>();
-			map.put("flags", true);
-			String jsonString = JSON.toJSONString(map);
-			response.getWriter().write(jsonString);
+		}else{
+			worker.setW_pwd(pwd);
+			boolean upWorker = wsi.upWorker(worker);
+			if(upWorker) {
+				Map<String,Boolean> map = new HashMap<String, Boolean>();
+				map.put("flags", true);
+				String jsonString = JSON.toJSONString(map);
+				response.getWriter().write(jsonString);
+			}else {
+				Map<String,Boolean> map = new HashMap<String, Boolean>();
+				map.put("flags", false);
+				String jsonString = JSON.toJSONString(map);
+				response.getWriter().write(jsonString);
+			}
+			
 		}
 	}
 	
@@ -116,4 +138,74 @@ public class WorkerServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		writer.write(jsonString);
 	}
+	
+	//修改员工信息
+	private void upworker(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String position = request.getParameter("position");
+		Worker worker = wsi.findWorkOne(id);
+		worker.setW_name(new String(name.getBytes("ISO-8859-1"),"UTF-8"));
+		worker.setW_position(new String(position.getBytes("ISO-8859-1"),"UTF-8"));
+		boolean upWorker = wsi.upWorker(worker);
+		String jsonString = JSON.toJSONString(upWorker);
+		PrintWriter writer = response.getWriter();
+		writer.write(jsonString);
+	}
+	
+	//重置员工密码
+	private void resetworkerpwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		Worker worker = wsi.findWorkOne(id);
+		worker.setW_pwd("1234");
+		boolean upWorker = wsi.upWorker(worker);
+		String jsonString = JSON.toJSONString(upWorker);
+		PrintWriter writer = response.getWriter();
+		writer.write(jsonString);
+	}
+	
+	//删除员工
+	private void delworker(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		boolean delWorker = wsi.delWorker(id);
+		String jsonString = JSON.toJSONString(delWorker);
+		PrintWriter writer = response.getWriter();
+		writer.write(jsonString);
+	}
+	
+
+	private void findWorkOne(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		Worker findWorkOne = wsi.findWorkOne(id);
+		System.out.println(findWorkOne);
+		if(findWorkOne==null) {
+			String jsonString = JSON.toJSONString(true);
+			PrintWriter writer = response.getWriter();
+			writer.write(jsonString);
+		}else {
+			String jsonString = JSON.toJSONString(false);
+			PrintWriter writer = response.getWriter();
+			writer.write(jsonString);
+		}
+	}
+	
+
+	//添加员工
+	private void addworker(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String position = request.getParameter("position");
+		Worker worker = new Worker();
+		worker.setW_id(id);
+		worker.setW_name(new String(name.getBytes("ISO-8859-1"),"UTF-8"));
+		worker.setW_pwd("1234");
+		worker.setW_position(new String(position.getBytes("ISO-8859-1"),"UTF-8"));
+		boolean addWorker = wsi.addWorker(worker);
+		String jsonString = JSON.toJSONString(addWorker);
+		PrintWriter writer = response.getWriter();
+		writer.write(jsonString);
+	}
+	
+	
+	
 }

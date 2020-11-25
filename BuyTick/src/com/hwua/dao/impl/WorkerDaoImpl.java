@@ -41,17 +41,19 @@ public class WorkerDaoImpl implements IWorkerDao{
 	}
 	//修改自己的密码
 	@Override
-	public boolean upMyPwd(String pwd) {
+	public boolean upWorker(Worker worker) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		Worker w = null;
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "update worker set w_pwd=? where w_id=?";
+			String sql = "update worker set w_pwd=?,w_name=?,w_position=? where w_id=?";
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, pwd);
-			ps.setString(2, Tools.username);
+			ps.setString(1, worker.getW_pwd());
+			ps.setString(2, worker.getW_name());
+			ps.setString(3, worker.getW_position());
+			ps.setString(4, worker.getW_id());
 			int i = ps.executeUpdate();
 			if(i>0)return true;
 		} catch (SQLException e) {
@@ -141,7 +143,6 @@ public class WorkerDaoImpl implements IWorkerDao{
 	//根据工号或姓名查询员工(分页)
 	@Override
 	public List<Worker> findWorkByIDpage(String find, int page, int limit) {
-		System.out.println("前台传回来的值"+find);
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -165,6 +166,72 @@ public class WorkerDaoImpl implements IWorkerDao{
 			e.printStackTrace();
 		}
 		return list;
+	}
+	//根据工号查询员工
+	@Override
+	public Worker findWorkOne(String find) {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		Worker w = null;
+		try {
+			conn = JDBCUtils.getConn();
+			String sql = "select *from worker where w_id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, find);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				w = new Worker();
+				w.setW_name(rs.getString(1));
+				w.setW_id(rs.getString(2));
+				w.setW_pwd("******");
+				w.setW_position(rs.getString(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return w;
+	}
+	//删除员工
+	@Override
+	public boolean delWorker(String id) {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		Worker w = null;
+		try {
+			conn = JDBCUtils.getConn();
+			String sql = "delete from worker where w_id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			int i = ps.executeUpdate();
+			if(i>0)return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	//添加员工
+	@Override
+	public boolean addWorker(Worker worker) {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		Worker w = null;
+		try {
+			conn = JDBCUtils.getConn();
+			String sql = "insert into worker values(?,?,?,?)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, worker.getW_name());
+			ps.setString(2, worker.getW_id());
+			ps.setString(3, worker.getW_pwd());
+			ps.setString(4, worker.getW_position());
+			int i = ps.executeUpdate();
+			if(i>0)return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

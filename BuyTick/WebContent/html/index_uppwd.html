@@ -45,14 +45,18 @@
 				</dl></li>
 			<li class="layui-nav-item "><a href="index_mysales.html">本人订单</a></li>
 			<li class="layui-nav-item "><a href="index_census.html">个人订单统计</a></li>
-			<li class="layui-nav-item "><a href=""  data-toggle="modal" data-target="#Exit">退出登录</a></li>
+			<li class="layui-nav-item "><a href="" data-toggle="modal"
+				data-target="#Exit">退出登录</a></li>
 		</ul>
 	</div>
 	<!-- 表格 -->
 
 	<div align="center"
 		style="width: 60%; height: 80%; background-color: #e8e8e8; position: absolute; margin-left: 25%; margin-top: 7%; border-radius: 20px; box-shadow: 0 12px 16px 0 rgba(45, 45, 42, 0.24), 0 17px 50px 12px rgba(25, 23, 16, 0.19);">
-		<br><br><br><b style="font-size: 36px;">修改密码</b>
+		<br>
+		<br>
+		<br>
+		<b style="font-size: 36px;">修改密码</b>
 		<div align="left" class="form-horizontal" role="form"
 			style="margin-left: 13%; padding: 100px;">
 			<div class="form-group">
@@ -87,31 +91,28 @@
 		</div>
 	</div>
 
-<!-- 退出登录模态框（Modal） -->
-<div class="modal fade" id="Exit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					退出登录
-				</h4>
+	<!-- 退出登录模态框（Modal） -->
+	<div class="modal fade" id="Exit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+				</div>
+				<div class="modal-body">是否确认退出当前账号</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="exit()">
+						确认退出</button>
+				</div>
 			</div>
-			<div class="modal-body">
-				是否确认退出当前账号
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-				</button>
-				<button type="button" class="btn btn-primary" onclick="exit()">
-					确认退出
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 </body>
 <script src="../layui.js" charset="utf-8 "></script>
 <script>
@@ -127,7 +128,8 @@
 		var userid = u_storage.get("userid");
 		if (userid == undefined)
 			userid = "";
-		$.ajax({
+		$
+				.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=finMyPerInfo",
 					//传输数据的类型
@@ -160,61 +162,65 @@
 					}
 				})
 	}
+	//修改密码
 	function upMyPwd() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)userid = "";
-		var lapwd=$("#lastPwd").val();
-		var newpwd=$("#newPwd").val();
-		var retnewpwd=$("#retnewPwd").val();
-		if(newpwd!=retnewpwd){
+		if (userid == undefined)
+			userid = "";
+		var lapwd = $("#lastPwd").val();
+		var newpwd = $("#newPwd").val();
+		var retnewpwd = $("#retnewPwd").val();
+		if (newpwd != retnewpwd) {
 			alert("两次密码输入不一致")
-		}else{
-			$.ajax({
-				//请求的路径
-				url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=upMyPwd",
-				//传输数据的类型
-				data:{
-					lapwd:$("#lastPwd").val(),
-					newpwd:$("#newPwd").val()
-				},
-				dataType : "json",
-				type : "post",
-				contentType : "application/x-www-form-urlencoded",
-				beforeSend : function(request) {
-					request.setRequestHeader("userid", userid);
-				},
-				async : false,
-				xhrFields : {
-					withCredentials : true
-				},
-				//是否需要缓冲
-				cache : false,
-				//成功的回调函数
-				success : function(data) {
-					console.log(data)
-					//alert("请求成功" + data.student2.name)
-					if (data.flag) {
-						alert("您还未登录，请登录")
-						$(location).attr("href", "login.html");
-					};
-					if (data.pwdflag==false) {
-						alert("密码输入错误")
-						$(location).attr("href", "index_uppwd.html");
-					};
-					if(data.flags){
-						alert("修改成功")
-						u_storage.set("userid","");
-						$(location).attr("href", "login.html");
-					}else{
-						alert("修改失败")
-					}
-
-				},
-				//报错的回调函数
-				error : function(request) {
-					alert("服务器加载中......")
-				}
-			})
+		} else {
+			$
+					.ajax({
+						//请求的路径
+						url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=upMyPwd",
+						//传输数据的类型
+						data : {
+							lapwd : $("#lastPwd").val(),
+							newpwd : $("#newPwd").val()
+						},
+						dataType : "json",
+						type : "post",
+						contentType : "application/x-www-form-urlencoded",
+						beforeSend : function(request) {
+							request.setRequestHeader("userid", userid);
+						},
+						async : false,
+						xhrFields : {
+							withCredentials : true
+						},
+						//是否需要缓冲
+						cache : false,
+						//成功的回调函数
+						success : function(data) {
+							console.log(data)
+							//alert("请求成功" + data.student2.name)
+							if (data.flag) {
+								alert("您还未登录，请登录")
+								$(location).attr("href", "login.html");
+							}
+							;
+							if (data.pwdflag == false) {
+								alert("密码输入错误")
+								$(location).attr("href", "index_uppwd.html");
+							} else {
+								if (data.flags) {
+									alert("修改成功")
+									u_storage.set("userid", "");
+									$(location).attr("href", "login.html");
+								} else {
+									alert("修改失败")
+								}
+							}
+						},
+						//报错的回调函数
+						error : function(request) {
+							alert("服务器加载中......")
+						}
+					})
 		}
 	}
 </script>

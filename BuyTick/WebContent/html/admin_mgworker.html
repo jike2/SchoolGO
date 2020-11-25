@@ -17,6 +17,15 @@
 <script src="../js/index_sales.js"></script>
 <script src="../js/index.js"></script>
 <link rel="stylesheet" href="../css/table.css">
+<style type="text/css">
+.red {
+	color: red
+}
+
+.green {
+	color: green
+}
+</style>
 </head>
 
 <body onload="findWorkAll(1)">
@@ -46,8 +55,11 @@
 				<th></th>
 				<th style="width: 200px"><input type="text" id="inputid"
 					placeholder="请输入工号或姓名"></th>
-				<th style="width: 591px"><button style="float: left;" onclick="findWorkByID(1)"
-						class="btn btn-success">查询</button></th>
+				<th style="width: 591px"><button style="float: left;"
+						onclick="findWorkByID(1)" class="btn btn-success">查询</button>
+					<button style="float: left; margin-left: 5px"
+						class="btn btn-success" data-toggle="modal"
+						data-target="#addworker" onclick="addpositioncss()">添加</button></th>
 			</tr>
 			<tr>
 				<th>工号</th>
@@ -73,10 +85,175 @@
 		 -->
 	</ul>
 
+	<!-- 修改模态框 -->
+	<div class="modal fade" id="upWorker" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">修&nbsp&nbsp&nbsp改</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							工&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="upw_id"
+								type="text" name="w_id" disabled>
+						</p>
+						<br>
+						<p>
+							姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：<input id="upw_name"
+								type="text" name="w_name"><br> <br>
+						<p>
+							密&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp码：<input type="text"
+								name="w_pwd" disabled>
+						</p>
+						<br>
+						<p>
+							职&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp务：<select
+								style="width: 174px" id="up_position" name="w_position">
+
+							</select>
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="upWorker()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 
 
-	<!-- 退出登录模态框（Modal） -->
-	<div class="modal fade" id="Exit" tabindex="-1" role="dialog"
+	<!-- 重置模态框 -->
+	<div class="modal fade" id="resetpwd" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">重&nbsp置&nbsp密&nbsp码</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							工&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="resetw_id"
+								type="text" name="w_id" disabled>
+						</p>
+						<br>
+						<p>
+							姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：<input type="text"
+								name="w_name" disabled><br> <br>
+						<p>
+							职&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp务：<input type="text"
+								name="w_position" disabled><br>
+						</p>
+						<br> 是否确认重置该员工密码？
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary"
+						onclick="resetWorkerpwd()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!-- 删除模态框 -->
+	<div class="modal fade" id="delworker" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">删&nbsp除&nbsp员&nbsp工</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							工&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="delw_id"
+								type="text" name="w_id" disabled>
+						</p>
+						<br>
+						<p>
+							姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：<input type="text"
+								name="w_name" disabled><br> <br>
+							<p>
+							职&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp务：<input type="text"
+								name="w_position" disabled><br>
+						</p>
+						<br>
+						是否确认重置该员工密码？
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="delwork()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	
+	<!-- 添加模态框 -->
+	<div class="modal fade" id="addworker" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">修&nbsp&nbsp&nbsp改</h4>
+				</div>
+				<div class="modal-body">
+					<div style="margin-left: 200px" id="tick">
+						<p>
+							工&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="addw_id"
+								type="text" onblur="queryWorkername()"
+								onkeyup="queryWorkername()">&nbsp&nbsp&nbsp<span
+								id="checkid">工号验证</span>
+						</p>
+						<br>
+						<p>
+							姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：<input id="addw_name"
+								type="text"><br>
+						<br>
+						
+						<p>
+							职&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp务：<select
+								style="width: 174px" id="addp_position">
+									
+								</select>
+						</p>
+						<br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="addWorker()">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	
+	<!-- 退出登录模态框（Modal） --><di v class="modal fade" id="Exit" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -135,8 +312,7 @@
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
-		$
-				.ajax({
+		$.ajax({
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=querworkerAll",
 					dataType : "json",
 					type : "post",
@@ -193,13 +369,13 @@
 										+ list[i].w_pwd
 										+ '</td><td>'
 										+ list[i].w_position
-										+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+										+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
 										+ i
 										+ ')">修改</button>'
-										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
 										+ i
 										+ ')">重置密码</button>'
-										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
 										+ i + ')">删除</button></td></tr>';
 							}
 						}
@@ -238,8 +414,7 @@
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
-		$
-				.ajax({
+		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=findWorkByID",
 					//传输数据的类型
@@ -292,8 +467,8 @@
 
 						//渲染查询的数据
 						var list = data.data;
-						var tbody="";
-						if (list.length==0) {
+						var tbody = "";
+						if (list.length == 0) {
 							alert("无此员工")
 						} else {
 							for (var i = 0; i < 10; i++) {
@@ -308,13 +483,13 @@
 											+ list[i].w_pwd
 											+ '</td><td>'
 											+ list[i].w_position
-											+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+											+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
 											+ i
 											+ ')">修改</button>'
-											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
 											+ i
 											+ ')">重置密码</button>'
-											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
 											+ i + ')">删除</button></td></tr>';
 								}
 							}
@@ -326,6 +501,301 @@
 						alert("服务器加载中......")
 					}
 				})
+	}
+	function upWorkermodel(i) {
+		var id = document.getElementById("tb").rows[i].cells[0].innerText;
+		var name = document.getElementById("tb").rows[i].cells[1].innerText;
+		var pwd = document.getElementById("tb").rows[i].cells[2].innerText;
+		var position = document.getElementById("tb").rows[i].cells[3].innerText;
+		$("input[name='w_id']").val(id);
+		$("input[name='w_name']").val(name);
+		$("input[name='w_pwd']").val(pwd);
+		$("input[name='w_position']").val(position);
+		var select = "";
+		select += "<option>销售员</option>";
+		$("#up_position").html(select);
+	}
+	//修改员工信息
+	function upWorker() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=upworker",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						id : $("#upw_id").val(),
+						name : $("#upw_name").val(),
+						position : $("#up_position").val()
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data) {
+							alert("修改成功")
+							$(location).attr("href", "admin_mgworker.html");
+						} else {
+							alert("修改失败")
+							$(location).attr("href", "admin_mgworker.html");
+						}
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//重置员工密码
+	function resetWorkerpwd() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=resetworkerpwd",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						id : $("#resetw_id").val(),
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data) {
+							alert("重置成功")
+							$(location).attr("href", "admin_mgworker.html");
+						} else {
+							alert("重置失败")
+							$(location).attr("href", "admin_mgworker.html");
+						}
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//删除员工
+	function delwork() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=delworker",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						id : $("#delw_id").val(),
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data) {
+							alert("删除成功")
+							$(location).attr("href", "admin_mgworker.html");
+						} else {
+							alert("删除失败")
+							$(location).attr("href", "admin_mgworker.html");
+						}
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	function addpositioncss() {
+		var select = "";
+		select += "<option>销售员</option>";
+		$("#addp_position").html(select);
+	}
+	//添加员工
+	function addWorker() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=addworker",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						id : $("#addw_id").val(),
+						name : $("#addw_name").val(),
+						position : $("#addp_position").val(),
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						if (data) {
+							alert("添加成功")
+							$(location).attr("href", "admin_mgworker.html");
+						} else {
+							alert("添加失败")
+							$(location).attr("href", "admin_mgworker.html");
+						}
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//添加时验证工号
+	function queryWorkername() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined)
+			userid = "";
+		if ($("#addw_id").val() == "") {
+			$("#checkid").removeClass("green");
+			$("#checkid").removeClass("red");
+			$("#checkid").html("工号不能为空");
+		} else {
+			$.ajax({
+						//请求的路径
+						url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=findWorkOne",
+						//传输数据的类型
+						dataType : "json",
+						data : {
+							id : $("#addw_id").val(),
+						},
+						//get请求的方式
+						//type : "GET",
+						//post请求的方式
+						type : "post",
+						//get方式请求后台的格式设置
+						//contentType : "application/json;charset=UTF-8",
+						//post方式请求后台的格式设置
+						contentType : "application/x-www-form-urlencoded",
+						beforeSend : function(request) {
+							request.setRequestHeader("userid", userid);
+						},
+						async : false,
+						xhrFields : {
+							withCredentials : true
+						},
+						//是否需要缓冲
+						cache : false,
+						//成功的回调函数
+						success : function(data) {
+							console.log(data)
+							//alert("请求成功" + data.student2.name)
+							if (data.flag) {
+								alert("您还未登录，请登录")
+								$(location).attr("href", "login.html");
+							}
+							;
+							if (data) {
+								$("#checkid").removeClass("red");
+								$("#checkid").addClass("green");
+								$("#checkid").html("该工号可使用")
+							} else {
+								$("#checkid").removeClass("green");
+								$("#checkid").addClass("red");
+								$("#checkid").html("该工号已存在")
+							}
+						},
+						//报错的回调函数
+						error : function(request) {
+							alert("服务器加载中......")
+						}
+					})
+		}
 	}
 </script>
 
