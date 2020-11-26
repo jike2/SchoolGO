@@ -48,11 +48,11 @@
 										+ list[i].p_price
 										+ '</td><td>'
 										+ list[i].p_number
-										+ '</td><td><button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="addmytext('
+										+ '</td><td><button class="btnflo btn btn-success" data-toggle="modal" data-target="#myModal" onclick="addmytext('
 										+ i
-										+ ')">入库</button>&nbsp<button class="btn btn-success" data-toggle="modal" data-target="#deltype" onclick="addmytext('
+										+ ')">入库</button>&nbsp<button class="btnflo btn btn-success" data-toggle="modal" data-target="#deltype" onclick="addmytext('
 										+ i
-										+ ')">删除</button>&nbsp<button class="btn btn-success" data-toggle="modal" data-target="#uptype" onclick="addmytext('
+										+ ')">删除</button>&nbsp<button class="btnflo btn btn-success" data-toggle="modal" data-target="#uptype" onclick="addmytext('
 										+ i + ')">修改</button></td></tr>';
 							}
 						}
@@ -130,11 +130,11 @@
 											+ data.p_price
 											+ '</td><td>'
 											+ data.p_number
-											+ '</td><td><button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="addmytext('
+											+ '</td><td><button class="btnflo btn btn-success" data-toggle="modal" data-target="#myModal" onclick="addmytext('
 											+ i
-											+ ')">入库</button>&nbsp<button class="btn btn-success" data-toggle="modal" data-target="#deltype" onclick="addmytext('
+											+ ')">入库</button>&nbsp<button class="btnflo btn btn-success" data-toggle="modal" data-target="#deltype" onclick="addmytext('
 											+ i
-											+ ')">删除</button>&nbsp<button class="btn btn-success" data-toggle="modal" data-target="#uptype" onclick="addmytext('
+											+ ')">删除</button>&nbsp<button class="btnflo btn btn-success" data-toggle="modal" data-target="#uptype" onclick="addmytext('
 											+ i + ')">修改</button></td></tr>';
 								}
 							}

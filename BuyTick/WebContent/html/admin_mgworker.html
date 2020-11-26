@@ -37,8 +37,8 @@
 			lay-filter="demo " style="margin-right: 10px;">
 			<li class="layui-nav-item "><a href="adminindex.html">门票管理</a></li>
 			<li class="layui-nav-item "><a href="admin_mgworker.html">员工管理</a></li>
-			<li class="layui-nav-item "><a href="">订单查询</a></li>
-			<li class="layui-nav-item "><a href="">订单统计</a></li>
+			<li class="layui-nav-item "><a href="admin_sales.html">订单查询</a></li>
+			<li class="layui-nav-item "><a href="admin_census.html">订单统计</a></li>
 			<li class="layui-nav-item "><a href="" data-toggle="modal"
 				data-target="#Exit">退出登录</a></li>
 		</ul>
@@ -253,7 +253,8 @@
 		<!-- /.modal -->
 	</div>
 	
-	<!-- 退出登录模态框（Modal） --><di v class="modal fade" id="Exit" tabindex="-1" role="dialog"
+	<!-- 退出登录模态框（Modal） -->
+	<di v class="modal fade" id="Exit" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -369,13 +370,13 @@
 										+ list[i].w_pwd
 										+ '</td><td>'
 										+ list[i].w_position
-										+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
+										+ '</td><td><button class="btnflo btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
 										+ i
 										+ ')">修改</button>'
-										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
+										+ '&nbsp<button class="btnflo btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
 										+ i
 										+ ')">重置密码</button>'
-										+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
+										+ '&nbsp<button class="btnflo btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
 										+ i + ')">删除</button></td></tr>';
 							}
 						}
@@ -483,13 +484,13 @@
 											+ list[i].w_pwd
 											+ '</td><td>'
 											+ list[i].w_position
-											+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
+											+ '</td><td><button class="btnflo btn btn-success"  data-toggle="modal" data-target="#upWorker" onclick="upWorkermodel('
 											+ i
 											+ ')">修改</button>'
-											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
+											+ '&nbsp<button class="btnflo btn btn-success"  data-toggle="modal" data-target="#resetpwd" onclick="upWorkermodel('
 											+ i
 											+ ')">重置密码</button>'
-											+ '&nbsp<button class="btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
+											+ '&nbsp<button class="btnflo btn btn-success"  data-toggle="modal" data-target="#delworker" onclick="upWorkermodel('
 											+ i + ')">删除</button></td></tr>';
 								}
 							}

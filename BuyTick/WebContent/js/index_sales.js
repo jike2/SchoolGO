@@ -90,7 +90,7 @@
 										+ list[i].s_usestate
 										+ '</td><td>'
 										+ commonTime
-										+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('+i+')">立即撤单</button></td></tr>';
+										+ '</td><td><button class="btnflo btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('+i+')">立即撤单</button></td></tr>';
 							} else {
 								tbody += '<tr><td>'
 										+ list[i].s_id
@@ -108,7 +108,7 @@
 										+ list[i].s_usestate
 										+ '</td><td>'
 										+ commonTime
-										+ '</td><td><button class="btn btn-success" style="background-color: #9e9e9e">不可撤单</button></td></tr>';
+										+ '</td><td><button class="btnflo btn btn-success" style="background-color: #9e9e9e">不可撤单</button></td></tr>';
 							}
 						}
 						}
@@ -230,7 +230,7 @@
 												+ list.s_usestate
 												+ '</td><td>'
 												+ commonTime
-												+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+												+ '</td><td><button class="btnflo btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
 												+ i
 												+ ')">立即撤单</button></td></tr>';
 									} else {
@@ -250,7 +250,7 @@
 												+ list.s_usestate
 												+ '</td><td>'
 												+ commonTime
-												+ '</td><td><button class="btn btn-success" style="background-color: #9e9e9e">不可撤单</button></td></tr>';
+												+ '</td><td><button class="btnflo btn btn-success" style="background-color: #9e9e9e">不可撤单</button></td></tr>';
 									}
 								}
 							}
@@ -443,7 +443,7 @@
 												+ list.s_usestate
 												+ '</td><td>'
 												+ commonTime
-												+ '</td><td><button class="btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
+												+ '</td><td><button class="btnflo btn btn-success"  data-toggle="modal" data-target="#saleModal" onclick="saleModal('
 												+ i
 												+ ')">立即撤单</button></td></tr>';
 									} else {
@@ -463,7 +463,7 @@
 												+ list.s_usestate
 												+ '</td><td>'
 												+ commonTime
-												+ '</td><td><button class="btn btn-success" style="background-color: red">不可撤单</button></td></tr>';
+												+ '</td><td><button class="btnflo btn btn-success" style="background-color: red">不可撤单</button></td></tr>';
 									}
 								}
 							}

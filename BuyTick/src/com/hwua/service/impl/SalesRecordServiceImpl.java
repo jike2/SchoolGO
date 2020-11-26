@@ -81,5 +81,89 @@ public class SalesRecordServiceImpl implements SalesRecordService{
 		List<Census> list = isr.censusSalespage(date, w_id,page,limit);
 		return list;
 	}
+	//根据工号、订单号、门票分类查询
+	@Override
+	public List<SalesRecord> adminfindSale(String find) {
+		List<SalesRecord> list = isr.adminfindSale(find);
+		return list;
+	}
+	//根据工号、订单号、门票分类查询(分页)
+	@Override
+	public List<SalesRecord> adminfindSalepage(String find, int page, int limit) {
+		List<SalesRecord> list = isr.adminfindSalepage(find,page,limit);
+		return list;
+	}
+	//查询入库订单
+	@Override
+	public List<SalesRecord> Putinstorage() {
+		List<SalesRecord> list = isr.Putinstorage();
+		return list;
+	}
+	//查询入库订单(分页)
+	@Override
+	public List<SalesRecord> Putinstoragepage(int page, int limit) {
+		List<SalesRecord> list = isr.Putinstoragepage(page,limit);
+		return list;
+	}
+	//查询全部订单（入库+出售）
+	@Override
+	public List<SalesRecord> adminquerySaleAll() {
+		List<SalesRecord> list = isr.adminquerySaleAll();
+		return list;
+	}
+	//查询全部订单（入库+出售）分页
+	@Override
+	public List<SalesRecord> adminquerySaleAllpage(int page, int limit) {
+		List<SalesRecord> list = isr.adminquerySaleAllpage(page,limit);
+		return list;
+	}
+	//统计全部订单
+	@Override
+	public List<Census> admincensusAll() {
+		List<Census> list = isr.admincensusAll();
+		return list;
+	}
+	//统计全部订单（分页）
+	@Override
+	public List<Census> admincensusAllpage(int page, int limit) {
+		List<Census> list = isr.admincensusAllpage(page,limit);
+		return list;
+	}
+	//统计全部订单（按月）
+	@Override
+	public List<Census> censusMsalesAllByMonth() {
+		List<Census> list = isr.censusMsalesAllByMonth();
+		return list;
+	}
+	//统计全部订单（按月）（分页）
+	@Override
+	public List<Census> censusMsalesAllByMonthpage(int page, int limit) {
+		List<Census> list = isr.censusMsalesAllByMonthpage(page,limit);
+		return list;
+	}
+	//统计输入日期的订单
+	@Override
+	public List<Census> admincensusBydate(String date) {
+		List<Census> list = isr.admincensusBydate(date);
+		return list;
+	}
+	//统计输入日期的订单(分页)
+	@Override
+	public List<Census> admincensusBydatepage(String date, int page, int limit) {
+		List<Census> list = isr.admincensusBydatepage(date,page,limit);
+		return list;
+	}
+	//按月份统计账号订单
+	@Override
+	public List<Census> censalesByWorkermonth(String w_id) {
+		List<Census> list = isr.censalesByWorkermonth(w_id);
+		return list;
+	}
+	//按月份统计账号订单（分页）
+	@Override
+	public List<Census> censalesByWorkermonthpage(String w_id, int page, int limit) {
+		List<Census> list = isr.censalesByWorkermonthpage(w_id,page,limit);
+		return list;
+	}
 
 }

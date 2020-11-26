@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Layui</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../css/layui.css" media="all">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/utilSession.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/index_sales.js"></script>
+<script src="../js/index.js"></script>
+<link rel="stylesheet" href="../css/table.css">
+</head>
+<body onload="censusMsalesAll(1)">
+<div id="navhead">
+		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
+	</div>
+	<div class="nav">
+		<ul class="mynav layui-nav layui-nav-tree layui-inline "
+			lay-filter="demo " style="margin-right: 10px;">
+			<li class="layui-nav-item "><a href="adminindex.html">门票管理</a></li>
+			<li class="layui-nav-item "><a href="admin_mgworker.html">员工管理</a></li>
+			<li class="layui-nav-item "><a href="admin_sales.html">订单查询</a></li>
+			<li class="layui-nav-item "><a href="admin_census.html">订单统计</a></li>
+			<li class="layui-nav-item "><a href="" data-toggle="modal"
+				data-target="#Exit">退出登录</a></li>
+		</ul>
+	</div>
+	
+	<!-- 表格 -->
+
+	<table class="table table-striped mytable">
+		<caption class="tablename">订&nbsp单&nbsp统&nbsp计</caption>
+
+		<thead id="th">
+			<tr>
+				<th></th>
+				<th>
+				<button style="float: left;margin-left: 5px" onclick="censusMsalesAllByMonth(1)" class="btn btn-success">月销售情况</button>
+				<input style="float: left;height: 34px;margin-left: 35px" type="date" id="censusdate"  placeholder="请输入日期">
+				<button style="float: left;margin-left: 5px" onclick="admincensusBydate(1)" class="btn btn-success">按日期统计</button>
+				<input style="float: left;margin-left: 35px;height: 34px" type="month"  id="censusmonth" placeholder="请输入月份">
+				<button style="float: left;margin-left: 5px" onclick="admincensusBymonth(1)" class="btn btn-success">按月份统计</button>
+				<input style="float: left;margin-left: 35px;height: 34px" type="text"  id="censusworker" placeholder="请输入工号">
+				<button style="float: left;margin-left: 5px" onclick="censalesByWorkerdate(1)" class="btn btn-success">员工日销售情况</button>
+				<button style="float: left;margin-left: 5px" onclick="censalesByWorkermonth(1)" class="btn btn-success">员工月销售情况</button>
+				</th>
+				<th></th>
+			</tr>
+			<tr id="trx">
+				<th>日期</th>
+				<th>卖出数量</th>
+				<th>总金额</th>
+			</tr>
+		</thead>
+		<tbody id="tb"></tbody>
+	</table>
+
+	<!-- 分页按钮 -->
+	<ul class="pagination" id="pag" style="margin-left: 6%">
+		<li id="re" value="1"><a href="#">&laquo;</a></li>
+		<!-- 
+		<li class="active"><a id="pag1" href="javascript:paging(1)">1</a></li>
+		<li class="disabled"><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+		<li><a href="#">4</a></li>
+		<li><a href="#">5</a></li>
+		<li><a href="#">&raquo;</a></li>
+		 -->
+	</ul>
+	
+	<!-- 退出登录模态框（Modal） -->
+	<di v class="modal fade" id="Exit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+				</div>
+				<div class="modal-body">是否确认退出当前账号</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="exit()">
+						确认退出</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+</body>
+<script src="../layui.js" charset="utf-8 "></script>
+<script type="text/javascript">
+layui.use('element', function() {
+	var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	//监听导航点击
+	element.on('nav(demo)', function(elem) {
+		//console.log(elem)
+		layer.msg(elem.text());
+	});
+});
+//查询全部订单(按日)
+function censusMsalesAll(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=admincensusAll",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					
+					
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:censusMsalesAll(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:censusMsalesAll('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:censusMsalesAll('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censusMsalesAll(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ list[i].date
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td><td>'
+									+ list[i].money
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+//查询全部订单(按月)
+function censusMsalesAllByMonth(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=censusMsalesAllByMonth",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					
+					
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:censusMsalesAllByMonth(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:censusMsalesAllByMonth('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:censusMsalesAllByMonth('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censusMsalesAllByMonth(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ list[i].date
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td><td>'
+									+ list[i].money
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+//统计输入的天数的订单
+function admincensusBydate(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var date = $("#censusdate").val();
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=admincensusBydate",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val(),
+					date:$("#censusdate").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					var tr = "";
+					tr += '<th>日期</th><th>门票分类</th><th>卖出数量</th>';
+					
+					$("#trx").html(tr);
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:admincensusBydate(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:admincensusBydate('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:admincensusBydate('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:admincensusBydate(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ date
+									+ '</td><td>'
+									+ list[i].type
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+//统计输入的月份订单
+function admincensusBymonth(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var date = $("#censusmonth").val();
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=admincensusBydate",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val(),
+					date:$("#censusmonth").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					var tr = "";
+					tr += '<th>日期</th><th>门票分类</th><th>卖出数量</th>';
+					
+					$("#trx").html(tr);
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:admincensusBymonth(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:admincensusBymonth('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:admincensusBymonth('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:admincensusBymonth(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ date
+									+ '</td><td>'
+									+ list[i].type
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+//按日统计员工订单
+function censalesByWorkerdate(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=censalesByWorkerdate",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val(),
+					find:$("#censusworker").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					var tr = "";
+					tr += '<th>日期</th><th>卖出数量</th><th>总金额</th>';
+					
+					$("#trx").html(tr);
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:censalesByWorkerdate(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:censalesByWorkerdate('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:censalesByWorkerdate('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censalesByWorkerdate(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ list[i].date
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td><td>'
+									+ list[i].money
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+//按月统计员工订单
+function censalesByWorkermonth(bt) {
+	var userid = u_storage.get("userid");
+	if (userid == undefined)
+		userid = "";
+	var num = parseInt($("#re").val());
+	var num1 = parseInt($("#ne").val());
+	if(bt==0 && num==1){
+		alert("已经到第一页了")
+		//$("#re").addClass("disabled");
+	}else if(bt==-1 && num==num1){
+		alert("已经到最后一页了")
+		//$("#ne").addClass("disabled");
+	}else if(bt==0 && num!=1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num-1)).addClass("active");
+		$("#re").val(num-1);
+	}else if(bt==-1 && num!=num1){
+		$("#pag"+num).removeClass("active");
+		$("#pag"+(num+1)).addClass("active");
+		$("#re").val(num+1);
+	}else{
+		$("#pag"+num).removeClass("active");
+		$("#pag"+bt).addClass("active");
+		$("#re").val(bt);
+	}
+	var page=parseInt($("#re").val());
+	$.ajax({
+				url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=censalesByWorkermonth",
+				dataType : "json",
+				type : "post",
+				data:{
+					page:$("#re").val(),
+					find:$("#censusworker").val()
+				},
+				//post方式请求后台的格式设置
+				contentType : "application/x-www-form-urlencoded",
+				beforeSend : function(request) {
+					request.setRequestHeader("userid", userid);
+				},
+				async : false,
+				xhrFields : {
+					withCredentials : true
+				},
+				//是否需要缓冲
+				cache : false,
+				//成功的回调函数
+				success : function(data) {
+					//console.log(data)
+					//alert("请求成功" + data.student2.name)
+					if (data.flag) {
+						alert("您还未登录，请登录")
+						$(location).attr("href", "login.html");
+					};
+					var tr = "";
+					tr += '<th>日期</th><th>卖出数量</th><th>总金额</th>';
+					
+					$("#trx").html(tr);
+					var ul = "";
+					ul += '<li id="re" value="'+page+'"><a href="javascript:censalesByWorkermonth(0);">&laquo;</a></li>';
+					for(var j=1;j<data.count+1;j++){
+						if(j==page){
+						ul += '<li id="pag'+j+'" class="active"><a href="javascript:censalesByWorkermonth('+j+');">'+j+'</a></li>';
+						}else{
+							ul += '<li id="pag'+j+'"><a href="javascript:censalesByWorkermonth('+j+');">'+j+'</a></li>';
+						}
+						};
+					ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censalesByWorkermonth(-1);">&raquo;</a></li>';
+					$("#pag").html(ul);
+					
+					
+					var list = data.data;
+					var tbody = "";
+					console.log(list);
+					for (var i = 0; i < 10; i++) {
+						if(list[i] == undefined){
+							tbody += '<tr style="height:42px"><td></td><td></td><td></td></tr>';
+						}else{
+							tbody += '<tr><td>'
+									+ list[i].date
+									+ '</td><td>'
+									+ list[i].num
+									+ '</td><td>'
+									+ list[i].money
+									+ '</td></tr>';
+					}
+					}
+					$("#tb").html(tbody);
+				},
+				//报错的回调函数
+				error : function(request) {
+					alert("服务器加载中......")
+				}
+			})
+}
+
+</script>
+</html>

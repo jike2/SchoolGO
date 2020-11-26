@@ -46,7 +46,7 @@
 										+ list[i].p_price
 										+ '</td><td>'
 										+ list[i].p_number
-										+ '</td><td><button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="query('
+										+ '</td><td><button class="btnflo btn btn-success" data-toggle="modal" data-target="#myModal" onclick="query('
 										+ i + ')">购买</button></td></tr>';
 							}
 						}
@@ -201,7 +201,7 @@
 											+ data.p_price
 											+ '</td><td>'
 											+ data.p_number
-											+ '</td><td><button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="query('
+											+ '</td><td><button class="btnflo btn btn-success" data-toggle="modal" data-target="#myModal" onclick="query('
 											+ i + ')">购买</button></td></tr>';
 								}
 							}
