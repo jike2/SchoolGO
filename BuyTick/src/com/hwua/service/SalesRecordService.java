@@ -13,11 +13,11 @@ public interface SalesRecordService {
 	
 	public SalesRecord quertSalesById(long id);//根据订单编号查询订单
 	
-	public boolean saleRecordById(long id);//根据订单编号撤单
+	public boolean saleRecordById(long id,String w_id);//根据订单编号撤单
 	
-	public List<SalesRecord> quertMySalesAll();//查询当前账号全部订单
+	public List<SalesRecord> quertMySalesAll(String w_id);//查询当前账号全部订单
 	
-	public List<SalesRecord> quertMySalespage(int page,int limit);//查询当前账号全部订单（分页）
+	public List<SalesRecord> quertMySalespage(String w_id,int page,int limit);//查询当前账号全部订单（分页）
 	
 	public List<Census> quertSalespageByDayAll(String w_id);//根据日期统计订单
 	

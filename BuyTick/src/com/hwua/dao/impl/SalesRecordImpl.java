@@ -163,7 +163,7 @@ public class SalesRecordImpl implements ISalesRecord{
 	}
 	//查询当前登录工号处理的全部订单
 	@Override
-	public List<SalesRecord> quertMySalesAll() {
+	public List<SalesRecord> quertMySalesAll(String w_id) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -172,7 +172,7 @@ public class SalesRecordImpl implements ISalesRecord{
 			conn = JDBCUtils.getConn();
 			String sql = "select * from sales_record where s_worker=?";
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, Tools.username);
+			ps.setString(1, w_id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				SalesRecord sr = new SalesRecord();
@@ -195,7 +195,7 @@ public class SalesRecordImpl implements ISalesRecord{
 	}
 	//查询全部订单（分页）
 	@Override
-	public List<SalesRecord> quertMySalespage(int page, int limit) {
+	public List<SalesRecord> quertMySalespage(String w_id,int page, int limit) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -204,7 +204,7 @@ public class SalesRecordImpl implements ISalesRecord{
 			conn = JDBCUtils.getConn();
 			String sql = "select * from sales_record where s_addnumber=0 and s_worker=? limit ?,?";
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, Tools.username);
+			ps.setString(1, w_id);
 			ps.setInt(2, (page-1)*limit);
 			ps.setInt(3, limit);
 			rs = ps.executeQuery();

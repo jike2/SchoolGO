@@ -113,8 +113,10 @@ public class SalesRecordServlet extends HttpServlet {
 	private void salesRecordByID(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("salesID");
 		Long ids=Long.parseLong(id);
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
 		boolean b = false;
-		if(srs.saleRecordById(ids)) {
+		if(srs.saleRecordById(ids,split[0])) {
 			SalesRecord record = srs.quertSalesById(ids);
 			Tickets tickets = ts.queryTickByType(record.getPrice_id());
 			tickets.setP_number(tickets.getP_number()+record.getS_number());
@@ -133,15 +135,17 @@ public class SalesRecordServlet extends HttpServlet {
 		String page = request.getParameter("page");
 		int pages = Integer.parseInt(page);
 		int limit = 10;
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
 		Map<String,Object> map = new HashMap<String, Object>();
-		List<SalesRecord> listall = srs.quertMySalesAll();//查询全部数据
+		List<SalesRecord> listall = srs.quertMySalesAll(split[0]);//查询全部数据
 		int count =0;
 		if(listall.size()%limit==0) {
 			count = listall.size()/limit;
 		}else {
 			count = listall.size()/limit+1;
 		}
-		List<SalesRecord> list = srs.quertMySalespage(pages, limit);//根据分页查询数据
+		List<SalesRecord> list = srs.quertMySalespage(split[0],pages, limit);//根据分页查询数据
 		
 		map.put("data", list);
 		map.put("count", count);
@@ -152,11 +156,12 @@ public class SalesRecordServlet extends HttpServlet {
 	//根据日期统计本人订单
 	private void censusMsalesAll(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String page = request.getParameter("page");
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
 		int pages = Integer.parseInt(page);
 		int limit = 10;
 		Map<String,Object> map = new HashMap<String, Object>();
-		
-		List<Census> listall = srs.quertSalespageByDayAll(Tools.username);
+		List<Census> listall = srs.quertSalespageByDayAll(split[0]);
 		int count =0;
 		if(listall.size()%limit==0) {
 			count = listall.size()/limit;
@@ -164,7 +169,7 @@ public class SalesRecordServlet extends HttpServlet {
 			count = listall.size()/limit+1;
 		}
 		
-		List<Census> list = srs.quertSalespageByDay(Tools.username, pages, limit);//根据分页查询数据
+		List<Census> list = srs.quertSalespageByDay(split[0], pages, limit);//根据分页查询数据
 		map.put("data", list);
 		map.put("count", count);
 		String jsonString = JSON.toJSONString(map);
@@ -177,9 +182,10 @@ public class SalesRecordServlet extends HttpServlet {
 		Map<String,Object> map = new HashMap<String, Object>();
 		String page = request.getParameter("page");
 		int pages = Integer.parseInt(page);
-		
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
 		String date = request.getParameter("date");
-		List<Census> listall = srs.censusSalespageAll(date, Tools.username);
+		List<Census> listall = srs.censusSalespageAll(date, split[0]);
 		int limit = 10;
 		int count =0;
 		if(listall.size()%limit==0) {
@@ -187,7 +193,7 @@ public class SalesRecordServlet extends HttpServlet {
 		}else {
 			count = listall.size()/limit+1;
 		}
-		List<Census> list = srs.censusSalespage(date, Tools.username,pages,limit);
+		List<Census> list = srs.censusSalespage(date, split[0],pages,limit);
 		map.put("data", list);
 		map.put("count", count);
 		String jsonString = JSON.toJSONString(map);

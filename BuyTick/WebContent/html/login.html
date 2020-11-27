@@ -89,6 +89,7 @@
              success: function(data) {
                  console.log(data)
                  if(data.id!=0){
+                	 
                  	u_storage.set("userid",data.id);
  					$(location).attr("href","adminindex.html");
  				}else{

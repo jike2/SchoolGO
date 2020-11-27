@@ -17,7 +17,7 @@
 <script src="../js/index.js"></script>
 <link rel="stylesheet" href="../css/table.css">
 </head>
-<body onload="censusMsalesAll(1)">
+<body onload="censusMsalesAll(1)" class="hid">
 <div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -111,8 +111,12 @@ layui.use('element', function() {
 //查询全部订单(按日)
 function censusMsalesAll(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -122,16 +126,10 @@ function censusMsalesAll(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());
@@ -204,8 +202,12 @@ function censusMsalesAll(bt) {
 //查询全部订单(按月)
 function censusMsalesAllByMonth(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -215,16 +217,10 @@ function censusMsalesAllByMonth(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());
@@ -297,8 +293,12 @@ function censusMsalesAllByMonth(bt) {
 //统计输入的天数的订单
 function admincensusBydate(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -308,16 +308,10 @@ function admincensusBydate(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var date = $("#censusdate").val();
@@ -393,8 +387,12 @@ function admincensusBydate(bt) {
 //统计输入的月份订单
 function admincensusBymonth(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -404,16 +402,10 @@ function admincensusBymonth(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var date = $("#censusmonth").val();
@@ -489,8 +481,12 @@ function admincensusBymonth(bt) {
 //按日统计员工订单
 function censalesByWorkerdate(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -500,16 +496,10 @@ function censalesByWorkerdate(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());
@@ -584,8 +574,12 @@ function censalesByWorkerdate(bt) {
 //按月统计员工订单
 function censalesByWorkermonth(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -595,16 +589,10 @@ function censalesByWorkermonth(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());

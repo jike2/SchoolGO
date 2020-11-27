@@ -17,7 +17,7 @@
 <script src="../js/index.js"></script>
 <link rel="stylesheet" href="../css/table.css">
 </head>
-<body onload="adminquerySaleAll(1)">
+<body onload="adminquerySaleAll(1)" class="hid">
 <div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -121,8 +121,12 @@ layui.use('element', function() {
 //查询全部订单
 function adminquerySaleAll(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -132,16 +136,10 @@ function adminquerySaleAll(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());
@@ -225,8 +223,12 @@ function adminquerySaleAll(bt) {
 //根据订单编号、工号、门票分类查询
 function adminfindSale(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if (bt == 0 && num == 1) {
@@ -236,16 +238,10 @@ function adminfindSale(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	} else if (bt == 0 && num != 1) {
-		$("#pag" + num).removeClass("active");
-		$("#pag" + (num - 1)).addClass("active");
 		$("#re").val(num - 1);
 	} else if (bt == -1 && num != num1) {
-		$("#pag" + num).removeClass("active");
-		$("#pag" + (num + 1)).addClass("active");
 		$("#re").val(num + 1);
 	} else {
-		$("#pag" + num).removeClass("active");
-		$("#pag" + bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page = parseInt($("#re").val());
@@ -325,6 +321,8 @@ function adminfindSale(bt) {
 											+ '</td><td>'
 											+ list[i].s_money
 											+ '</td><td>'
+											+ list[i].s_addnumber
+											+ '</td><td>'
 											+ list[i].s_worker
 											+ '</td><td>'
 											+ list[i].s_usestate
@@ -347,8 +345,12 @@ function adminfindSale(bt) {
 //查询入库记录
 function Putinstorage(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -358,16 +360,10 @@ function Putinstorage(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());
@@ -453,8 +449,12 @@ function Putinstorage(bt) {
 //查询出售记录
 function cell(bt) {
 	var userid = u_storage.get("userid");
-	if (userid == undefined)
-		userid = "";
+	if (userid == undefined){
+		alert("您还未登录，请登录")
+		$(location).attr("href", "login.html");
+		}else{
+			$("body").removeClass("hid")
+		};
 	var num = parseInt($("#re").val());
 	var num1 = parseInt($("#ne").val());
 	if(bt==0 && num==1){
@@ -464,16 +464,10 @@ function cell(bt) {
 		alert("已经到最后一页了")
 		//$("#ne").addClass("disabled");
 	}else if(bt==0 && num!=1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num-1)).addClass("active");
 		$("#re").val(num-1);
 	}else if(bt==-1 && num!=num1){
-		$("#pag"+num).removeClass("active");
-		$("#pag"+(num+1)).addClass("active");
 		$("#re").val(num+1);
 	}else{
-		$("#pag"+num).removeClass("active");
-		$("#pag"+bt).addClass("active");
 		$("#re").val(bt);
 	}
 	var page=parseInt($("#re").val());

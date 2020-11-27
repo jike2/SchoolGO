@@ -1,7 +1,12 @@
 	//查询全部门票
 	function queryAll() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickAll",
@@ -92,8 +97,12 @@
 	//出售
 	function saleTick() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=saleTick",
@@ -147,8 +156,12 @@
 	//根据id查询门票
 	function findByID() {
 		var userid = u_storage.get("userid");
-			if (userid == undefined)
-				userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 			$.ajax({
 						//请求的路径
 						url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickByID",

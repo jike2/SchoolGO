@@ -73,3 +73,6 @@
 .btnflo{
 	float: none;
 }
+.hid{
+	display: none;
+}

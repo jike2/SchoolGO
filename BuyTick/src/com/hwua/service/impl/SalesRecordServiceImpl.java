@@ -33,29 +33,28 @@ public class SalesRecordServiceImpl implements SalesRecordService{
 	}
 	//撤单
 	@Override
-	public boolean saleRecordById(long id) {
+	public boolean saleRecordById(long id,String w_id) {
 		boolean flag = false;
 		SalesRecord record = isr.quertSalesById(id);
-		record.setS_worker(Tools.username);
+		record.setS_worker(w_id);
 		SalesRecord sr = new SalesRecord();
 		Date date = new Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		record.setS_date(timeStamp);
 		record.setS_state("已撤单");
 		flag = isr.SaleRecord(record);
-		System.out.println(flag);
 		return flag;
 	}
 	//查询当前账号全部订单
 	@Override
-	public List<SalesRecord> quertMySalesAll() {
-		List<SalesRecord> list = isr.quertMySalesAll();
+	public List<SalesRecord> quertMySalesAll(String w_id) {
+		List<SalesRecord> list = isr.quertMySalesAll(w_id);
 		return list;
 	}
 	//查询当前账号全部订单（分页）
 	@Override
-	public List<SalesRecord> quertMySalespage(int page, int limit) {
-		List<SalesRecord> list = isr.quertMySalespage(page, limit);
+	public List<SalesRecord> quertMySalespage(String w_id,int page, int limit) {
+		List<SalesRecord> list = isr.quertMySalespage(w_id,page, limit);
 		return list;
 	}
 	//根据日期统计订单

@@ -8,7 +8,7 @@ public interface TickService {
 
 	public List<Tickets> queryAll(int page,int limit);//获取全部门票信息
 	
-	public boolean saleTick(int p_id,int number);//门票出售
+	public boolean saleTick(int p_id,int number,String w_id);//门票出售
 	
 	public Tickets queryTickById(int id);//根据id查门票
 	
@@ -16,7 +16,7 @@ public interface TickService {
 	
 	public boolean uptick(Tickets tk);
 	
-	public boolean addticknum(int p_id,int number);//门票入库
+	public boolean addticknum(int p_id,int number,String w_id);//门票入库
 	
 	public boolean deltick(int p_id);//门票删除
 	

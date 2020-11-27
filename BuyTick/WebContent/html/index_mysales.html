@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="../css/table.css">
 </head>
 
-<body onload="mysales(1)">
+<body onload="mysales(1)" class="hid">
 	<div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -180,8 +180,12 @@
 	//根据订单编号查询
 	function findMySaleByID(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if (bt == 0 && num == 1) {
@@ -191,16 +195,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		} else if (bt == 0 && num != 1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num - 1)).addClass("active");
 			$("#re").val(num - 1);
 		} else if (bt == -1 && num != num1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num + 1)).addClass("active");
 			$("#re").val(num + 1);
 		} else {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
@@ -338,8 +336,12 @@
 	//撤单
 	function saleRecord() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 			//请求的路径
 			url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=salesRecordByID",
@@ -391,8 +393,12 @@
 	//查询该登录工号处理的订单
 	function mysales(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if(bt==0 && num==1){
@@ -402,16 +408,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		}else if(bt==0 && num!=1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num-1)).addClass("active");
 			$("#re").val(num-1);
 		}else if(bt==-1 && num!=num1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num+1)).addClass("active");
 			$("#re").val(num+1);
 		}else{
-			$("#pag"+num).removeClass("active");
-			$("#pag"+bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page=parseInt($("#re").val());

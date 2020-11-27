@@ -19,7 +19,7 @@ function uzStorage() {
  */
 u_storage.set = function(key, value) {
 	
-	debugger
+	
 	var v = value;
 	if (typeof v === 'object') {
 		v = JSON.stringify(v);

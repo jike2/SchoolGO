@@ -28,7 +28,7 @@
 </style>
 </head>
 
-<body onload="findWorkAll(1)">
+<body onload="findWorkAll(1)" class="hid">
 	<div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -289,8 +289,12 @@
 	//查询全部员工
 	function findWorkAll(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if (bt == 0 && num == 1) {
@@ -300,16 +304,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		} else if (bt == 0 && num != 1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num - 1)).addClass("active");
 			$("#re").val(num - 1);
 		} else if (bt == -1 && num != num1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num + 1)).addClass("active");
 			$("#re").val(num + 1);
 		} else {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
@@ -391,8 +389,12 @@
 	//根据工号或姓名查找
 	function findWorkByID(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if (bt == 0 && num == 1) {
@@ -402,16 +404,13 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		} else if (bt == 0 && num != 1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num - 1)).addClass("active");
+			
 			$("#re").val(num - 1);
 		} else if (bt == -1 && num != num1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num + 1)).addClass("active");
+		
 			$("#re").val(num + 1);
 		} else {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + bt).addClass("active");
+			
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
@@ -503,6 +502,7 @@
 					}
 				})
 	}
+	//将信息打印到模态框
 	function upWorkermodel(i) {
 		var id = document.getElementById("tb").rows[i].cells[0].innerText;
 		var name = document.getElementById("tb").rows[i].cells[1].innerText;
@@ -519,8 +519,12 @@
 	//修改员工信息
 	function upWorker() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=upworker",
@@ -574,8 +578,12 @@
 	//重置员工密码
 	function resetWorkerpwd() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=resetworkerpwd",
@@ -627,8 +635,12 @@
 	//删除员工
 	function delwork() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=delworker",
@@ -685,8 +697,12 @@
 	//添加员工
 	function addWorker() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=addworker",
@@ -740,8 +756,12 @@
 	//添加时验证工号
 	function queryWorkername() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		if ($("#addw_id").val() == "") {
 			$("#checkid").removeClass("green");
 			$("#checkid").removeClass("red");

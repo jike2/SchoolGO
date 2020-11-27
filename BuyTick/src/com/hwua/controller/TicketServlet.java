@@ -82,10 +82,12 @@ public class TicketServlet extends HttpServlet {
 	private void saleTick(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String p_id = request.getParameter("p_id");
 		String p_num = request.getParameter("p_num");
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
 		int id = Integer.parseInt(p_id);
 		int number = Integer.parseInt(p_num);
 		Map<String,String> map = new HashMap<String, String>();
-		if(ts.saleTick(id, number)) {
+		if(ts.saleTick(id, number,split[0])) {
 			map.put("flags", "true");
 		}else {
 			map.put("flags", "true");
@@ -108,11 +110,12 @@ public class TicketServlet extends HttpServlet {
 	//增加库存
 	private void addticknum(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("p_id");
-		System.out.println(id);
 		String num = request.getParameter("p_num");
 		int p_id = Integer.parseInt(id);
 		int p_num = Integer.parseInt(num);
-		boolean addticknum = ts.addticknum(p_id, p_num);
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
+		boolean addticknum = ts.addticknum(p_id, p_num,split[0]);
 		String jsonString = JSON.toJSONString(addticknum);
 		PrintWriter writer = response.getWriter();
 		writer.write(jsonString);
@@ -134,15 +137,12 @@ public class TicketServlet extends HttpServlet {
 	private void queryTickByName(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		String p_type = request.getParameter("p_type");
-		System.out.println(p_type);
 		Tickets tickets = ts.queryTickByType(new String(p_type.getBytes("ISO-8859-1"),"UTF-8"));
 		if(tickets.getP_type() == null || tickets.getP_type().equals("")) {
-			System.out.println("可使用");
 			String jsonString = JSON.toJSONString(true);
 			PrintWriter writer = response.getWriter();
 			writer.write(jsonString);
 		}else {
-			System.out.println("不可使用");
 			String jsonString = JSON.toJSONString(false);
 			PrintWriter writer = response.getWriter();
 			writer.write(jsonString);
@@ -158,8 +158,10 @@ public class TicketServlet extends HttpServlet {
 		String p_price = request.getParameter("p_price");
 		double price = Double.parseDouble(p_price);
 		Tickets tk = ts.queryTickById(id);
+		System.out.println(tk);
 		tk.setP_type(new String(p_type.getBytes("ISO-8859-1"),"UTF-8"));
 		tk.setP_price(price);
+		System.out.println(tk.toString());
 		boolean uptick = ts.uptick(tk);
 		String jsonString = JSON.toJSONString(uptick);
 		PrintWriter writer = response.getWriter();

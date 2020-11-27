@@ -56,9 +56,11 @@ public class WorkerServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		doGet(request, response);
 	}
-
+	//查询个人信息
 	private void finMyPerInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Worker worker = wsi.login(Tools.username);
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
+		Worker worker = wsi.login(split[0]);
 		String jsonString = JSON.toJSONString(worker);
 		response.getWriter().write(jsonString);
 	}
@@ -68,7 +70,9 @@ public class WorkerServlet extends HttpServlet {
 	private void upMyPwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String lapwd = request.getParameter("lapwd");
 		String pwd = request.getParameter("newpwd");
-		Worker worker = wsi.login(Tools.username);
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
+		Worker worker = wsi.login(split[0]);
 		
 		if(!lapwd.equals(worker.getW_pwd())) {
 			Map<String,Boolean> map = new HashMap<String, Boolean>();

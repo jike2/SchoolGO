@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		doGet(request, response);
 	}
+	//管理员登录
 	private void loginadmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -56,10 +57,9 @@ public class LoginServlet extends HttpServlet {
 		if(worker!=null) {
 			if(worker.getW_position().equals("管理员")) {
 				if(worker.getW_pwd().equals(password)) {
-					Tools.username=username;
 					String sessionid = request.getSession().getId();
 					Map<String,Object> map = new HashMap<String, Object>();
-					map.put("id", sessionid);
+					map.put("id", username+"&"+sessionid);
 					response.getWriter().write(JSON.toJSONString(map));
 				}else {
 					Map<String,Object> map = new HashMap<String, Object>();
@@ -86,10 +86,9 @@ public class LoginServlet extends HttpServlet {
 		Worker worker = ws.login(username);
 		if(worker!=null) {
 			if(worker.getW_pwd().equals(password)) {
-				Tools.username=username;
 				String sessionid = request.getSession().getId();
 				Map<String,Object> map = new HashMap<String, Object>();
-				map.put("id", sessionid);
+				map.put("id", username+"&"+sessionid);
 				response.getWriter().write(JSON.toJSONString(map));
 			}else {
 				Map<String,Object> map = new HashMap<String, Object>();

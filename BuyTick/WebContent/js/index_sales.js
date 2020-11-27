@@ -1,8 +1,12 @@
 	//查询全部订单
 	function querySaleAll(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if(bt==0 && num==1){
@@ -12,16 +16,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		}else if(bt==0 && num!=1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num-1)).addClass("active");
 			$("#re").val(num-1);
 		}else if(bt==-1 && num!=num1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num+1)).addClass("active");
 			$("#re").val(num+1);
 		}else{
-			$("#pag"+num).removeClass("active");
-			$("#pag"+bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page=parseInt($("#re").val());
@@ -124,8 +122,12 @@
 	//根据订单编号查询
 	function findSaleByID(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if (bt == 0 && num == 1) {
@@ -135,16 +137,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		} else if (bt == 0 && num != 1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num - 1)).addClass("active");
 			$("#re").val(num - 1);
 		} else if (bt == -1 && num != num1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num + 1)).addClass("active");
 			$("#re").val(num + 1);
 		} else {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
@@ -282,8 +278,12 @@
 	//撤单
 	function saleRecord() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 			//请求的路径
 			url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=salesRecordByID",
@@ -336,8 +336,12 @@
 	function mysales(bt) {
 		alert("mysales")
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
 		if (bt == 0 && num == 1) {
@@ -347,16 +351,10 @@
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
 		} else if (bt == 0 && num != 1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num - 1)).addClass("active");
 			$("#re").val(num - 1);
 		} else if (bt == -1 && num != num1) {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + (num + 1)).addClass("active");
 			$("#re").val(num + 1);
 		} else {
-			$("#pag" + num).removeClass("active");
-			$("#pag" + bt).addClass("active");
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());

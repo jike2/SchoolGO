@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="../css/table.css">
 </head>
 
-<body onload="censusMsalesAll(1)">
+<body onload="censusMsalesAll(1)" class="hid">
 	<div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -47,7 +47,8 @@
 				</dl></li>
 			<li class="layui-nav-item "><a href="index_mysales.html">本人订单</a></li>
 			<li class="layui-nav-item "><a href="index_census.html">个人订单统计</a></li>
-			<li class="layui-nav-item "><a href=""  data-toggle="modal" data-target="#Exit">退出登录</a></li>
+			<li class="layui-nav-item "><a href="" data-toggle="modal"
+				data-target="#Exit">退出登录</a></li>
 		</ul>
 	</div>
 	<!-- 表格 -->
@@ -58,8 +59,16 @@
 		<thead id="th">
 			<tr>
 				<th></th>
-				<th><input type="date" id="inputid" placeholder="请输入日期"></th>
-				<th><button onclick="cenMySalesByDate(1)" class="btn btn-success">查询</button></th>
+				<th style="width:35%"><input
+					style="float: left; height: 34px" type="date"
+					id="censusDate" placeholder="请输入日期">
+					<button style="margin-left: 5px" onclick="cenMySalesByDate(1)"
+						class="btn btn-success">查询</button> <input
+					style="float: left; margin-left: 50px; height: 34px" type="month"
+					id="censusMonth" placeholder="请输入月份">
+					<button style="margin-left: 5px" onclick="cenMySalesByMonth(1)"
+						class="btn btn-success">查询</button></th>
+				<th></th>
 			</tr>
 			<tr>
 				<th>日期</th>
@@ -85,30 +94,27 @@
 
 
 	<!-- 退出登录模态框（Modal） -->
-<div class="modal fade" id="Exit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					退出登录
-				</h4>
+	<div class="modal fade" id="Exit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+				</div>
+				<div class="modal-body">是否确认退出当前账号</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="exit()">
+						确认退出</button>
+				</div>
 			</div>
-			<div class="modal-body">
-				是否确认退出当前账号
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-				</button>
-				<button type="button" class="btn btn-primary" onclick="exit()">
-					确认退出
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 </body>
 <script src="../layui.js" charset="utf-8 "></script>
 <script>
@@ -128,36 +134,35 @@
 	//查询全部订单
 	function censusMsalesAll(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
-		if(bt==0 && num==1){
+		if (bt == 0 && num == 1) {
 			alert("已经到第一页了")
 			//$("#re").addClass("disabled");
-		}else if(bt==-1 && num==num1){
+		} else if (bt == -1 && num == num1) {
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
-		}else if(bt==0 && num!=1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num-1)).addClass("active");
-			$("#re").val(num-1);
-		}else if(bt==-1 && num!=num1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num+1)).addClass("active");
-			$("#re").val(num+1);
-		}else{
-			$("#pag"+num).removeClass("active");
-			$("#pag"+bt).addClass("active");
+		} else if (bt == 0 && num != 1) {
+			$("#re").val(num - 1);
+		} else if (bt == -1 && num != num1) {
+			$("#re").val(num + 1);
+		} else {
 			$("#re").val(bt);
 		}
-		var page=parseInt($("#re").val());
-		$.ajax({
+		var page = parseInt($("#re").val());
+		$
+				.ajax({
 					url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=censusMsalesAll",
 					dataType : "json",
 					type : "post",
-					data:{
-						page:$("#re").val()
+					data : {
+						page : $("#re").val()
 					},
 					//post方式请求后台的格式设置
 					contentType : "application/x-www-form-urlencoded",
@@ -177,38 +182,37 @@
 						if (data.flag) {
 							alert("您还未登录，请登录")
 							$(location).attr("href", "login.html");
-						};
-						
-						
+						}
+						;
+
 						var ul = "";
 						ul += '<li id="re" value="'+page+'"><a href="javascript:censusMsalesAll(0);">&laquo;</a></li>';
-						for(var j=1;j<data.count+1;j++){
-							if(j==page){
-							ul += '<li id="pag'+j+'" class="active"><a href="javascript:censusMsalesAll('+j+');">'+j+'</a></li>';
-							}else{
-								ul += '<li id="pag'+j+'"><a href="javascript:censusMsalesAll('+j+');">'+j+'</a></li>';
+						for (var j = 1; j < data.count + 1; j++) {
+							if (j == page) {
+								ul += '<li id="pag'+j+'" class="active"><a href="javascript:censusMsalesAll('
+										+ j + ');">' + j + '</a></li>';
+							} else {
+								ul += '<li id="pag'+j+'"><a href="javascript:censusMsalesAll('
+										+ j + ');">' + j + '</a></li>';
 							}
-							};
+						}
+						;
 						ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censusMsalesAll(-1);">&raquo;</a></li>';
 						$("#pag").html(ul);
-						
-						
+
 						var list = data.data;
-						
+
 						var tbody = "";
 						console.log(list);
 						for (var i = 0; i < 10; i++) {
-							if(list[i] == undefined){
+							if (list[i] == undefined) {
 								tbody += '<tr style="height:51px"><td></td><td></td><td></td></tr>';
-							}else{
-								tbody += '<tr><td>'
-										+ list[i].date
-										+ '</td><td>'
-										+ list[i].num
-										+ '</td><td>'
-										+ list[i].money
+							} else {
+								tbody += '<tr><td>' + list[i].date
+										+ '</td><td>' + list[i].num
+										+ '</td><td>' + list[i].money
 										+ '</td></tr>';
-						}
+							}
 						}
 						$("#tb").html(tbody);
 					},
@@ -221,38 +225,37 @@
 	//根据日期查询
 	function cenMySalesByDate(bt) {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		var num = parseInt($("#re").val());
 		var num1 = parseInt($("#ne").val());
-		if(bt==0 && num==1){
+		if (bt == 0 && num == 1) {
 			alert("已经到第一页了")
 			//$("#re").addClass("disabled");
-		}else if(bt==-1 && num==num1){
+		} else if (bt == -1 && num == num1) {
 			alert("已经到最后一页了")
 			//$("#ne").addClass("disabled");
-		}else if(bt==0 && num!=1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num-1)).addClass("active");
-			$("#re").val(num-1);
-		}else if(bt==-1 && num!=num1){
-			$("#pag"+num).removeClass("active");
-			$("#pag"+(num+1)).addClass("active");
-			$("#re").val(num+1);
-		}else{
-			$("#pag"+num).removeClass("active");
-			$("#pag"+bt).addClass("active");
+		} else if (bt == 0 && num != 1) {
+			$("#re").val(num - 1);
+		} else if (bt == -1 && num != num1) {
+			$("#re").val(num + 1);
+		} else {
 			$("#re").val(bt);
 		}
-		var date = $("#inputid").val();
-		var page=parseInt($("#re").val());
-		$.ajax({
+		var date = $("#censusDate").val();
+		var page = parseInt($("#re").val());
+		$
+				.ajax({
 					url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=cenMySalesByDate",
 					dataType : "json",
 					type : "post",
-					data:{
-						page:$("#re").val(),
-						date:$("#inputid").val()
+					data : {
+						page : $("#re").val(),
+						date : $("#censusDate").val()
 					},
 					//post方式请求后台的格式设置
 					contentType : "application/x-www-form-urlencoded",
@@ -272,42 +275,144 @@
 						if (data.flag) {
 							alert("您还未登录，请登录")
 							$(location).attr("href", "login.html");
-						};
+						}
+						;
 						var thead = "";
-						thead += '<tr><th></th><th></th><th><input type="date" id="inputid" placeholder="请输入日期"></th><th><button onclick="cenMySalesByDate(1)" class="btn btn-success">查询</button></th></tr>';
+						thead += '<tr><th></th><th style="width:35%;"><input style="float: left;height: 34px" type="date" id="censusDate" placeholder="请输入日期">'
+							+ '<button style="margin-left: 5px" onclick="cenMySalesByDate(1)" class="btn btn-success">查询</button>'
+							+ '<input style="float: left;margin-left: 50px;height: 34px" type="month" id="censusMonth" placeholder="请输入月份">'
+							+ '<button style="margin-left: 5px" onclick="cenMySalesByMonth(1)" class="btn btn-success">查询</button>'
+							+ '</th><th></th><th></th></tr>';
 						thead += '<tr><th>日期</th><th>门票分类</th><th>卖出数量</th><th>总金额</th></tr>';
-						
+
 						$("#th").html(thead);
 						var ul = "";
 						ul += '<li id="re" value="'+page+'"><a href="javascript:cenMySalesByDate(0);">&laquo;</a></li>';
-						for(var j=1;j<data.count+1;j++){
-							if(j==page){
-							ul += '<li id="pag'+j+'" class="active"><a href="javascript:cenMySalesByDate('+j+');">'+j+'</a></li>';
-							}else{
-								ul += '<li id="pag'+j+'"><a href="javascript:cenMySalesByDate('+j+');">'+j+'</a></li>';
+						for (var j = 1; j < data.count + 1; j++) {
+							if (j == page) {
+								ul += '<li id="pag'+j+'" class="active"><a href="javascript:cenMySalesByDate('
+										+ j + ');">' + j + '</a></li>';
+							} else {
+								ul += '<li id="pag'+j+'"><a href="javascript:cenMySalesByDate('
+										+ j + ');">' + j + '</a></li>';
 							}
-							};
+						}
+						;
 						ul += '<li id="ne" value="'+data.count+'"><a href="javascript:cenMySalesByDate(-1);">&raquo;</a></li>';
 						$("#pag").html(ul);
-						
-						
+
 						var list = data.data;
 						var tbody = "";
 						console.log(list);
 						for (var i = 0; i < 10; i++) {
-							if(list[i] == undefined){
+							if (list[i] == undefined) {
 								tbody += '<tr style="height:51px"><td></td><td></td><td></td><td></td></tr>';
-							}else{
-								tbody += '<tr><td>'
-										+ date
-										+ '</td><td>'
-										+ list[i].type
-										+ '</td><td>'
-										+ list[i].num
-										+ '</td><td>'
-										+ list[i].money
-										+ '</td></tr>';
+							} else {
+								tbody += '<tr><td>' + date + '</td><td>'
+										+ list[i].type + '</td><td>'
+										+ list[i].num + '</td><td>'
+										+ list[i].money + '</td></tr>';
+							}
 						}
+						$("#tb").html(tbody);
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//根据月份统计
+	function cenMySalesByMonth(bt) {
+		var userid = u_storage.get("userid");
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
+		var num = parseInt($("#re").val());
+		var num1 = parseInt($("#ne").val());
+		if (bt == 0 && num == 1) {
+			alert("已经到第一页了")
+			//$("#re").addClass("disabled");
+		} else if (bt == -1 && num == num1) {
+			alert("已经到最后一页了")
+			//$("#ne").addClass("disabled");
+		} else if (bt == 0 && num != 1) {
+			$("#re").val(num - 1);
+		} else if (bt == -1 && num != num1) {
+			$("#re").val(num + 1);
+		} else {
+			$("#re").val(bt);
+		}
+		var date = $("#censusMonth").val();
+		var page = parseInt($("#re").val());
+		$
+				.ajax({
+					url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=cenMySalesByDate",
+					dataType : "json",
+					type : "post",
+					data : {
+						page : $("#re").val(),
+						date : $("#censusMonth").val()
+					},
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						//console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						var thead = "";
+						thead += '<tr><th></th><th style="width:35%;"><input style="float: left;height: 34px" type="date" id="censusDate" placeholder="请输入日期">'
+							+ '<button style="margin-left: 5px" onclick="cenMySalesByDate(1)" class="btn btn-success">查询</button>'
+							+ '<input style="float: left;margin-left: 50px;height: 34px" type="month" id="censusMonth" placeholder="请输入月份">'
+							+ '<button style="margin-left: 5px" onclick="cenMySalesByMonth(1)" class="btn btn-success">查询</button>'
+							+ '</th><th></th><th></th></tr>';
+					thead += '<tr><th>日期</th><th>门票分类</th><th>卖出数量</th><th>总金额</th></tr>';
+
+						$("#th").html(thead);
+						var ul = "";
+						ul += '<li id="re" value="'+page+'"><a href="javascript:cenMySalesByMonth(0);">&laquo;</a></li>';
+						for (var j = 1; j < data.count + 1; j++) {
+							if (j == page) {
+								ul += '<li id="pag'+j+'" class="active"><a href="javascript:cenMySalesByMonth('
+										+ j + ');">' + j + '</a></li>';
+							} else {
+								ul += '<li id="pag'+j+'"><a href="javascript:cenMySalesByMonth('
+										+ j + ');">' + j + '</a></li>';
+							}
+						}
+						;
+						ul += '<li id="ne" value="'+data.count+'"><a href="javascript:cenMySalesByMonth(-1);">&raquo;</a></li>';
+						$("#pag").html(ul);
+
+						var list = data.data;
+						var tbody = "";
+						console.log(list);
+						for (var i = 0; i < 10; i++) {
+							if (list[i] == undefined) {
+								tbody += '<tr style="height:51px"><td></td><td></td><td></td><td></td></tr>';
+							} else {
+								tbody += '<tr><td>' + date + '</td><td>'
+										+ list[i].type + '</td><td>'
+										+ list[i].num + '</td><td>'
+										+ list[i].money + '</td></tr>';
+							}
 						}
 						$("#tb").html(tbody);
 					},

@@ -29,7 +29,7 @@
 </style>
 </head>
 
-<body onload="adminqueryAll()">
+<body onload="adminqueryAll()" class="hid">
 	<div id="navhead">
 		<b>售&nbsp&nbsp&nbsp票&nbsp&nbsp&nbsp系&nbsp&nbsp&nbsp统</b>
 	</div>
@@ -169,7 +169,7 @@
 				<div class="modal-body">
 					<div style="margin-left: 200px" id="tick">
 						<p>
-							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="uptype"
+							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<input id="upp_id"
 								type="text" name="p_id" disabled>
 						</p>
 						<br>
@@ -282,10 +282,14 @@
 	//修改门票
 	function upTick() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
-		$
-				.ajax({
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
+			alert($("#upp_id").val()+"==="+$("#upp_type").val()+"==="+$("#upp_price").val())
+		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=uptick",
 					//传输数据的类型
@@ -338,13 +342,16 @@
 	//查询门票是否存在
 	function queryname() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		if ($("#upp_type").val() == "") {
 			$("#upverifyType").html("不能为空")
 		} else {
-			$
-					.ajax({
+			$.ajax({
 						//请求的路径
 						url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickByName",
 						//传输数据的类型
@@ -401,8 +408,12 @@
 	//查询门票是否存在
 	function addqueryname() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		if ($("#addp_type111").val() == "") {
 			$("#addverifyType").html("不能为空")
 		} else {
@@ -464,8 +475,12 @@
 	//添加
 	function addtick() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=addTick",
@@ -513,8 +528,13 @@
 	//入库
 	function addnum() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
+			alert($("#addp_id").val()+"==="+$("#addp_num").val())
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=addticknum",

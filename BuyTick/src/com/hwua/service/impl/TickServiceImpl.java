@@ -25,7 +25,7 @@ public class TickServiceImpl implements TickService{
 	}
 	//门票出售
 	@Override
-	public boolean saleTick(int p_id, int number) {
+	public boolean saleTick(int p_id, int number,String w_id) {
 		boolean flag = false;
 		Tickets tk = itd.query(p_id);
 		int num = tk.getP_number()-number;
@@ -39,7 +39,7 @@ public class TickServiceImpl implements TickService{
 			sr.setS_number(number);
 			sr.setS_addnumber(0);
 			sr.setS_money(tk.getP_price()*number);
-			sr.setS_worker(Tools.username);
+			sr.setS_worker(w_id);
 			sr.setS_usestate("未使用");
 			sr.setS_state("已处理");
 			Timestamp timeStamp = new Timestamp(date.getTime());
@@ -70,7 +70,7 @@ public class TickServiceImpl implements TickService{
 	}
 	//门票入库
 	@Override
-	public boolean addticknum(int p_id, int number) {
+	public boolean addticknum(int p_id, int number,String w_id) {
 		boolean flag = false;
 		Tickets tk = itd.query(p_id);
 		int num = tk.getP_number()+number;
@@ -84,7 +84,7 @@ public class TickServiceImpl implements TickService{
 			sr.setS_number(0);
 			sr.setS_addnumber(number);
 			sr.setS_money(0);
-			sr.setS_worker(Tools.username);
+			sr.setS_worker(w_id);
 			sr.setS_usestate("未使用");
 			sr.setS_state("已处理");
 			Timestamp timeStamp = new Timestamp(date.getTime());

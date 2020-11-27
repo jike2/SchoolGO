@@ -1,8 +1,12 @@
 //管理员查询全部门票
 	function adminqueryAll() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickAll",
@@ -75,8 +79,12 @@
 	//管理员根据id查询
 	function adminfindByID() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$
 				.ajax({
 					//请求的路径
@@ -163,8 +171,12 @@
 	//删除
 	function delTick() {
 		var userid = u_storage.get("userid");
-		if (userid == undefined)
-			userid = "";
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=deltick",

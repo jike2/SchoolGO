@@ -18,9 +18,9 @@ public interface ISalesRecord {
 
 	public boolean SaleRecord(SalesRecord sr);//撤单
 	
-	public List<SalesRecord> quertMySalesAll();//查询全部订单
+	public List<SalesRecord> quertMySalesAll(String w_id);//查询当前账号全部订单
 
-	public List<SalesRecord> quertMySalespage(int page,int limit);//分页查询全部订单
+	public List<SalesRecord> quertMySalespage(String w_id,int page,int limit);//当前账号分页查询全部订单
 	
 	public List<Census> quertSalespageByDay(String w_id,int page,int limit);//根据账号统计订单
 	
