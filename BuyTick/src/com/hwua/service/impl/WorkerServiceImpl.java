@@ -22,14 +22,14 @@ public class WorkerServiceImpl implements WorkerService{
 	}
 	//查询全部员工
 	@Override
-	public List<Worker> quertWorkerAll() {
-		List<Worker> list = wd.quertWorkerAll();
+	public List<Worker> quertWorkerAll(int permissions) {
+		List<Worker> list = wd.quertWorkerAll(permissions);
 		return list;
 	}
 	//查询全部员工（分页）
 	@Override
-	public List<Worker> quertWorkerpage(int page, int limit) {
-		List<Worker> list = wd.quertWorkerpage(page,limit);
+	public List<Worker> quertWorkerpage(int permissions,int page, int limit) {
+		List<Worker> list = wd.quertWorkerpage(permissions,page,limit);
 		return list;
 	}
 	@Override

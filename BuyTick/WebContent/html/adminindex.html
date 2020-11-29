@@ -55,7 +55,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th><input type="text" id="inputid" placeholder="请输入门票编号"></th>
+				<th><input type="text" id="inputid" onkeyup="this.value=this.value.replace(/\D/g,'')" placeholder="请输入门票编号"></th>
 				<th><button style="float: left;" onclick="adminfindByID()"
 						class="btn btn-success">查询</button>
 					<button style="float: left; margin-left: 10px"
@@ -95,7 +95,7 @@
 						</p>
 						<br> <br>
 						<p>
-							入库数量：<input type="text" name="p_num" id="addp_num">
+							入库数量：<input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" name="p_num" id="addp_num">
 						</p>
 						<br>
 					</div>
@@ -175,13 +175,13 @@
 						<br>
 						<p>
 							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<input id="upp_type"
-								type="text" name="p_type" onblur="queryname()"
-								onkeyup="queryname()"><br>
+								type="text" name="p_type" onblur="upquerytickname()"
+								onkeyup="upquerytickname()"><br>
 						<p id="upverifyType" style="text-align: center;">分类名时验证</p>
 						</p>
 						<p>
 							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<input id="upp_price"
-								type="text" name="p_price">
+								type="text" name="p_price" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
 						</p>
 						<br>
 						<p>
@@ -225,12 +225,12 @@
 						</p>
 						<p>
 							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<input id="addp_price"
-								type="text">
+								type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
 						</p>
 						<br>
 						<p>
 							数&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp量：<input id="addp_num111"
-								type="text">
+								type="text" onkeyup="this.value=this.value.replace(/\D/g,'')">
 						</p>
 						<br>
 					</div>
@@ -288,7 +288,9 @@
 			}else{
 				$("body").removeClass("hid")
 			};
-			alert($("#upp_id").val()+"==="+$("#upp_type").val()+"==="+$("#upp_price").val())
+		if($("#upverifyType").text()=="   该门票分类已存在"){
+			alert("该门票分类已存在")
+		}else{
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=uptick",
@@ -338,9 +340,10 @@
 						alert("服务器加载中......")
 					}
 				})
+		}
 	}
 	//查询门票是否存在
-	function queryname() {
+	function upquerytickname() {
 		var userid = u_storage.get("userid");
 		if (userid == undefined){
 			alert("您还未登录，请登录")
@@ -481,6 +484,9 @@
 			}else{
 				$("body").removeClass("hid")
 			};
+			if($("#addverifyType").text()=="   该门票分类已存在"){
+				alert("该门票分类已存在")
+			}else{
 		$.ajax({
 					//请求的路径
 					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=addTick",
@@ -523,6 +529,7 @@
 						alert("服务器加载中......")
 					}
 				})
+			}
 	}
 	
 	//入库

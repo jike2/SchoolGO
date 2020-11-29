@@ -29,7 +29,6 @@ public class WorkerServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String method = request.getParameter("method");
-		System.out.println(method);
 		if(method.equals("finMyPerInfo")) {
 			this.finMyPerInfo(request,response);
 		}else if(method.equals("upMyPwd")) {
@@ -48,6 +47,8 @@ public class WorkerServlet extends HttpServlet {
 			this.findWorkOne(request,response);
 		}else if(method.equals("addworker")) {
 			this.addworker(request,response);
+		}else if(method.equals("checkposition")) {
+			this.checkposition(request,response);
 		}
 	}
 
@@ -66,7 +67,7 @@ public class WorkerServlet extends HttpServlet {
 	}
 	
 
-
+	//修改当前登录账号密码
 	private void upMyPwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String lapwd = request.getParameter("lapwd");
 		String pwd = request.getParameter("newpwd");
@@ -76,7 +77,6 @@ public class WorkerServlet extends HttpServlet {
 		
 		if(!lapwd.equals(worker.getW_pwd())) {
 			Map<String,Boolean> map = new HashMap<String, Boolean>();
-			System.out.println("密码错误");
 			map.put("pwdflag", false);
 			String jsonString = JSON.toJSONString(map);
 			response.getWriter().write(jsonString);
@@ -103,15 +103,18 @@ public class WorkerServlet extends HttpServlet {
 		String page = request.getParameter("page");
 		int pages = Integer.parseInt(page);
 		int limit = 10;
+		String userid = request.getHeader("userid");
+		String[] split = userid.split("&");
+		Worker worker = wsi.login(split[0]);
 		Map<String,Object> map = new HashMap<String, Object>();
-		List<Worker> listall = wsi.quertWorkerAll();//查询全部数据
+		List<Worker> listall = wsi.quertWorkerAll(worker.getW_permissions());//查询全部数据
 		int count =0;
 		if(listall.size()%limit==0) {
 			count = listall.size()/limit;
 		}else {
 			count = listall.size()/limit+1;
 		}
-		List<Worker> list = wsi.quertWorkerpage(pages, limit);//根据分页查询数据
+		List<Worker> list = wsi.quertWorkerpage(worker.getW_permissions(),pages, limit);//根据分页查询数据
 		map.put("data", list);
 		map.put("count", count);
 		String jsonString = JSON.toJSONString(map);
@@ -177,11 +180,10 @@ public class WorkerServlet extends HttpServlet {
 		writer.write(jsonString);
 	}
 	
-
+	//根据工号查询员工
 	private void findWorkOne(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
 		Worker findWorkOne = wsi.findWorkOne(id);
-		System.out.println(findWorkOne);
 		if(findWorkOne==null) {
 			String jsonString = JSON.toJSONString(true);
 			PrintWriter writer = response.getWriter();
@@ -199,17 +201,39 @@ public class WorkerServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String position = request.getParameter("position");
+		String pos=new String(position.getBytes("ISO-8859-1"),"UTF-8");
 		Worker worker = new Worker();
 		worker.setW_id(id);
 		worker.setW_name(new String(name.getBytes("ISO-8859-1"),"UTF-8"));
 		worker.setW_pwd("1234");
-		worker.setW_position(new String(position.getBytes("ISO-8859-1"),"UTF-8"));
+		worker.setW_position(pos);
+		if(pos.equals("销售员")) {
+			worker.setW_permissions(1);
+		}else {
+			worker.setW_permissions(2);
+		}
 		boolean addWorker = wsi.addWorker(worker);
 		String jsonString = JSON.toJSONString(addWorker);
 		PrintWriter writer = response.getWriter();
 		writer.write(jsonString);
 	}
 	
-	
+
+	//查询当前账号职务
+	private void checkposition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String header = request.getHeader("userid");
+		String[] split = header.split("&");
+		Worker findWorkOne = wsi.findWorkOne(split[0]);
+		if(findWorkOne.getW_position().equals("管理员")) {
+			String jsonString = JSON.toJSONString("管理员");
+			PrintWriter writer = response.getWriter();
+			writer.write(jsonString);
+		}else if(findWorkOne.getW_position().equals("超级管理员")) {
+			String jsonString = JSON.toJSONString("超级管理员");
+			PrintWriter writer = response.getWriter();
+			writer.write(jsonString);
+		}
+		
+	}
 	
 }

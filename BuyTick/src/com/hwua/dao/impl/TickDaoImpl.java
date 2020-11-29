@@ -98,7 +98,6 @@ public class TickDaoImpl implements ITickDao{
 			ps.setString(1, p_type);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				System.out.println("id="+rs.getInt(1));
 				Tick.setP_id(rs.getInt(1));
 				Tick.setP_type(rs.getString(2));
 				Tick.setP_price(rs.getDouble(3));

@@ -14,7 +14,7 @@ import com.hwua.pojo.Worker;
 
 
 public class WorkerDaoImpl implements IWorkerDao{
-
+	//登录功能
 	@Override
 	public Worker login(String username) {
 		Connection conn = null;
@@ -33,6 +33,7 @@ public class WorkerDaoImpl implements IWorkerDao{
 				w.setW_id(rs.getString(2));
 				w.setW_pwd(rs.getString(3));
 				w.setW_position(rs.getString(4));
+				w.setW_permissions(rs.getInt(5));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,15 +64,16 @@ public class WorkerDaoImpl implements IWorkerDao{
 	}
 	//查询全部员工
 	@Override
-	public List<Worker> quertWorkerAll() {
+	public List<Worker> quertWorkerAll(int permissions) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		List<Worker> list = new ArrayList<Worker>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select *from worker";
+			String sql = "select *from worker where w_permissions<?";
 			ps = conn.prepareStatement(sql);
+			ps.setInt(1, permissions);
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
@@ -89,17 +91,18 @@ public class WorkerDaoImpl implements IWorkerDao{
 	}
 	//查询全部员工（分页）
 	@Override
-	public List<Worker> quertWorkerpage(int page, int limit) {
+	public List<Worker> quertWorkerpage(int permissions,int page, int limit) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		List<Worker> list = new ArrayList<Worker>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select *from worker limit ?,?";
+			String sql = "select *from worker where w_permissions<? limit ?,?";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, (page-1)*limit);
-			ps.setInt(2, limit);
+			ps.setInt(1, permissions);
+			ps.setInt(2, (page-1)*limit);
+			ps.setInt(3, limit);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Worker w = new Worker();
@@ -186,6 +189,7 @@ public class WorkerDaoImpl implements IWorkerDao{
 				w.setW_id(rs.getString(2));
 				w.setW_pwd("******");
 				w.setW_position(rs.getString(4));
+				w.setW_permissions(rs.getInt(5));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -220,12 +224,13 @@ public class WorkerDaoImpl implements IWorkerDao{
 		Worker w = null;
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "insert into worker values(?,?,?,?)";
+			String sql = "insert into worker values(?,?,?,?,?)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, worker.getW_name());
 			ps.setString(2, worker.getW_id());
 			ps.setString(3, worker.getW_pwd());
 			ps.setString(4, worker.getW_position());
+			ps.setInt(5, worker.getW_permissions());
 			int i = ps.executeUpdate();
 			if(i>0)return true;
 		} catch (SQLException e) {

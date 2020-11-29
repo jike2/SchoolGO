@@ -33,7 +33,6 @@ public class TicketServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String method = request.getParameter("method");
-		System.out.println(method);
 		if(method.equals("saleTick")) {
 			this.saleTick(request, response);
 		}else if(method.equals("queryTickAll")) {
@@ -158,10 +157,8 @@ public class TicketServlet extends HttpServlet {
 		String p_price = request.getParameter("p_price");
 		double price = Double.parseDouble(p_price);
 		Tickets tk = ts.queryTickById(id);
-		System.out.println(tk);
 		tk.setP_type(new String(p_type.getBytes("ISO-8859-1"),"UTF-8"));
 		tk.setP_price(price);
-		System.out.println(tk.toString());
 		boolean uptick = ts.uptick(tk);
 		String jsonString = JSON.toJSONString(uptick);
 		PrintWriter writer = response.getWriter();
@@ -171,12 +168,10 @@ public class TicketServlet extends HttpServlet {
 	//添加门票
 		private void addTick(HttpServletRequest request, HttpServletResponse response) throws IOException {
 			
-			System.out.println("添加方法");
 			String p_type = request.getParameter("p_type");
 			String p_price = request.getParameter("p_price");
 			double price = Double.parseDouble(p_price);
 			String p_num = request.getParameter("p_num");
-			System.out.println(p_num);
 			int num = Integer.parseInt(p_num);
 			Tickets tk = new Tickets();
 			tk.setP_type(new String(p_type.getBytes("ISO-8859-1"),"UTF-8"));

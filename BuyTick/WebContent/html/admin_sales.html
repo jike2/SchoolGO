@@ -46,7 +46,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th style="width: 300px"><input style="font-size: 14px" type="text" id="inputid" placeholder="请输入订单编号、工号或门票分类"></th>
+				<th style="width: 300px"><input style="font-size: 14px" type="text" id="inputid" placeholder="请输入订单编号、工号或门票分类" onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')"></th>
 				<th><button style="float: left;" onclick="adminfindSale(1)" class="btn btn-success">查询</button><button style="float: left;margin-left: 5px" onclick="Putinstorage(1)" class="btn btn-success">入库记录</button><button style="float: left;margin-left: 5px" onclick="cell(1)" class="btn btn-success">出售记录</button></th>
 			</tr>
 			<tr>

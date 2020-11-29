@@ -53,7 +53,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th style="width: 200px"><input type="text" id="inputid"
+				<th style="width: 200px"><input onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" type="text" id="inputid"
 					placeholder="请输入工号或姓名"></th>
 				<th style="width: 591px"><button style="float: left;"
 						onclick="findWorkByID(1)" class="btn btn-success">查询</button>
@@ -689,10 +689,61 @@
 					}
 				})
 	}
+	//职务选择框渲染
 	function addpositioncss() {
-		var select = "";
-		select += "<option>销售员</option>";
-		$("#addp_position").html(select);
+		var userid = u_storage.get("userid");
+		if (userid == undefined){
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+			}else{
+				$("body").removeClass("hid")
+			};
+		$.ajax({
+			//请求的路径
+			url : "http://localhost:8080/BuyTick/WorkerServlet.do?method=checkposition",
+			//传输数据的类型
+			dataType : "json",
+			//get请求的方式
+			//type : "GET",
+			//post请求的方式
+			type : "post",
+			//get方式请求后台的格式设置
+			//contentType : "application/json;charset=UTF-8",
+			//post方式请求后台的格式设置
+			contentType : "application/x-www-form-urlencoded",
+			beforeSend : function(request) {
+				request.setRequestHeader("userid", userid);
+			},
+			async : false,
+			xhrFields : {
+				withCredentials : true
+			},
+			//是否需要缓冲
+			cache : false,
+			//成功的回调函数
+			success : function(data) {
+				console.log(data)
+				//alert("请求成功" + data.student2.name)
+				if (data.flag) {
+					alert("您还未登录，请登录")
+					$(location).attr("href", "login.html");
+				}
+				;
+				if (data=="管理员") {
+					var select = "";
+					select += "<option>销售员</option>";
+				}else if(data=="超级管理员"){
+					var select = "";
+					select += "<option>销售员</option><option>管理员</option>";
+				}
+				$("#addp_position").html(select);
+			},
+			//报错的回调函数
+			error : function(request) {
+				alert("服务器加载中......")
+			}
+		})
+		
 	}
 	//添加员工
 	function addWorker() {

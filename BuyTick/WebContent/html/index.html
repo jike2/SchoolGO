@@ -46,33 +46,36 @@
 				</dl></li>
 			<li class="layui-nav-item "><a href="index_mysales.html">本人订单</a></li>
 			<li class="layui-nav-item "><a href="index_census.html">个人订单统计</a></li>
-			<li class="layui-nav-item "><a href=""  data-toggle="modal" data-target="#Exit">退出登录</a></li>
+			<li class="layui-nav-item "><a href="" data-toggle="modal"
+				data-target="#Exit">退出登录</a></li>
 		</ul>
 	</div>
 	<!-- 表格 -->
-	
+
 	<table class="table table-striped mytable">
-	<caption class="tablename">售&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp票</caption>
-	
+		<caption class="tablename">售&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp票</caption>
+
 		<thead id="th">
 			<tr>
 				<th></th>
 				<th></th>
 				<th></th>
-				<th><input type="text" id="inputid" placeholder="请输入门票编号"></th>
-				<th><button onclick="findByID()" class="btn btn-success">查询</button></th>
+				<th><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" id="inputid" placeholder="请输入门票编号"></th>
+				<th><button onclick="findByID()" class="btn btn-success">查询</button>
+					<button style="margin-left: 5px" onclick="query()"
+						class="btn btn-success" data-toggle="modal" data-target="#myModal">购买</button></th>
 			</tr>
 			<tr>
 				<th>编号</th>
 				<th>分类</th>
 				<th>单价</th>
 				<th>库存</th>
-				<th>操作</th>
+				<th>购买数量</th>
 			</tr>
 		</thead>
 		<tbody id="tb"></tbody>
 	</table>
-	
+
 	<!-- 模态框 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -84,29 +87,23 @@
 					<h4 class="modal-title" id="myModalLabel">售&nbsp&nbsp&nbsp票</h4>
 				</div>
 				<div class="modal-body">
-					<div style="margin-left: 200px" id="tick">
-						<p>
-							编&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：<span id="p_id"></span>
-						</p>
-						<br>
-						<p>
-							分&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp类：<span id="p_type"></span>
-						</p>
-						<br>
-						<p>
-							单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价：<span id="p_price"></span>
-						</p>
-						<br>
-						<p>
-							购买数量：<input type="text" id="p_num" onblur="summoney()" onkeyup="summoney()">
-						</p>
-						<br>
-						<p>
-							总&nbsp&nbsp金&nbsp&nbsp额：<b id="money" style="color: red"></b>
-						</p>
+					<div id="tick">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>分类</th>
+									<th>单价</th>
+									<th>数量</th>
+								</tr>
+							</thead>
+							<tbody id="saletick"></tbody>
+						</table>
 					</div>
 				</div>
 				<div class="modal-footer">
+					<span style="float: left; margin-left: 20px">总金额:</span><b
+						id="summoney" style="float: left; color: red"></b>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消
 					</button>
 					<button type="button" class="btn btn-primary" onclick="saleTick()">确定</button>
@@ -116,45 +113,307 @@
 		</div>
 		<!-- /.modal -->
 	</div>
-	
+
 	<!-- 退出登录模态框（Modal） -->
-<div class="modal fade" id="Exit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					退出登录
-				</h4>
+	<div class="modal fade" id="Exit" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">退出登录</h4>
+				</div>
+				<div class="modal-body">是否确认退出当前账号</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="exit()">
+						确认退出</button>
+				</div>
 			</div>
-			<div class="modal-body">
-				是否确认退出当前账号
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-				</button>
-				<button type="button" class="btn btn-primary" onclick="exit()">
-					确认退出
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 </body>
 <script src="../layui.js" charset="utf-8 "></script>
 <script>
-layui.use('element', function() {
-	var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-	//监听导航点击
-	element.on('nav(demo)', function(elem) {
-		//console.log(elem)
-		layer.msg(elem.text());
+	layui.use('element', function() {
+		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		//监听导航点击
+		element.on('nav(demo)', function(elem) {
+			//console.log(elem)
+			layer.msg(elem.text());
+		});
 	});
-});
+	//查询全部门票
+	function queryAll() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined) {
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+		} else {
+			$("body").removeClass("hid")
+		}
+		;
+		$.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickAll",
+					//传输数据的类型
+					dataType : "json",
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+						var list = data.data;
+						var tbody = "";
+						for (var i = 0; i < 10; i++) {
+							if (list[i] == undefined) {
+								tbody += '<tr><td style="height:51px"></td><td></td><td></td><td></td><td></td></tr>';
+							} else {
+								tbody += '<tr><td>'
+										+ list[i].p_id
+										+ '</td><td>'
+										+ list[i].p_type
+										+ '</td><td>'
+										+ list[i].p_price
+										+ '</td><td>'
+										+ list[i].p_number
+										+ '</td><td><input style="width:50px" type="text" id="num'
+										+ i + '" onblur="checknum(' + i
+										+ ')" onkeyup="checknum(' + i
+										+ ')"/><span id="che'+i+'"></span></td></tr>';
+							}
+						}
+						$("#tb").html(tbody);
+						//js
+						//window.location.href="aaa.jsp";
+						//1、jq跳转页面
+						//$(location).attr("href","aaa.jsp");
+						//2、
+						//$(window).attr("location","aaa.jsp");
+						//3、
+						//$(location).prop("href","aaa.jsp")
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
+	//验证购买数量
+	function checknum(bt) {
+		var reg = /\D/;
+		var num = $('#num' + bt).val();
+		var num1 = document.getElementById("tb").rows[bt].cells[3].innerText;
+		var num3 = parseInt(num);
+		var num4 = parseInt(num1);
+		if (reg.test(num)) {
+			$('#num' + bt).val("")
+		}else if(num3<=0||num3>num4){
+			alert("输入数量有误")
+			$('#num' + bt).val("")
+		}
 
+	}
+	//将数据打印到模态框
+	function query() {
 
+		var tbdoy = "";
+		var money = 0;
+		for (var i = 0; i < 10; i++) {
+			var num = parseInt($("#num" + i).val());
+			if (num > 0) {
+				var id = document.getElementById("tb").rows[i].cells[0].innerText;
+				var type = document.getElementById("tb").rows[i].cells[1].innerText;
+				var price = document.getElementById("tb").rows[i].cells[2].innerText;
+				tbdoy += '<tr><td>' + id + '</td><td>' + type + '</td><td>'
+						+ price + '</td><td>' + num + '</td></tr>'
+				money = money + price * num;
+			}
+		}
+		$("#saletick").html(tbdoy);
+		$("#summoney").html(money);
+	}
+	//计算总金额
+	function summoney() {
+		var num = $('#p_num').val();
+		var price = $('#p_price').text();
+		var money = price * num;
+		$('#money').html(money);
+	}
+	//出售
+	function saleTick() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined) {
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+		} else {
+			$("body").removeClass("hid")
+		}
+		;
+		var count = $('#saletick tr').length;
+		var count1=0;
+		for (var i = 0; i < count; i++) {
+			$.ajax({
+						//请求的路径
+						url : "http://localhost:8080/BuyTick/TicketServlet.do?method=saleTick",
+						//传输数据的类型
+						data : {
+							p_id : document.getElementById("saletick").rows[i].cells[0].innerText,
+							p_num : document.getElementById("saletick").rows[i].cells[3].innerText
+						},
+						dataType : "json",
+						//get请求的方式
+						//type : "GET",
+						//post请求的方式
+						type : "post",
+						//get方式请求后台的格式设置
+						//contentType : "application/json;charset=UTF-8",
+						//post方式请求后台的格式设置
+						contentType : "application/x-www-form-urlencoded",
+						beforeSend : function(request) {
+							request.setRequestHeader("userid", userid);
+						},
+						async : false,
+						xhrFields : {
+							withCredentials : true
+						},
+						//是否需要缓冲
+						cache : false,
+						//成功的回调函数
+						success : function(data) {
+							console.log(data)
+							//alert("请求成功" + data.student2.name)
+							if (data.flag) {
+								alert("您还未登录，请登录")
+								$(location).attr("href", "login.html");
+							}
+							;
+							if (data.flags == 'true') {
+								count1++;
+								//$(location).attr("href", "index.html");
+							} else {
+								alert("购买失败")
+								$(location).attr("href", "index.html");
+							}
+						},
+						//报错的回调函数
+						error : function(request) {
+							alert("服务器加载中......")
+						}
+					})
+		}
+		if(count1!=0){
+			alert("购买成功")
+			$(location).attr("href", "index.html");
+		}else{
+			alert("购买失败")
+			$(location).attr("href", "index.html");
+		}
+	}
+
+	//根据id查询门票
+	function findByID() {
+		var userid = u_storage.get("userid");
+		if (userid == undefined) {
+			alert("您还未登录，请登录")
+			$(location).attr("href", "login.html");
+		} else {
+			$("body").removeClass("hid")
+		}
+		;
+		$
+				.ajax({
+					//请求的路径
+					url : "http://localhost:8080/BuyTick/TicketServlet.do?method=queryTickByID",
+					//传输数据的类型
+					dataType : "json",
+					data : {
+						findById : $("#inputid").val()
+					},
+					//get请求的方式
+					//type : "GET",
+					//post请求的方式
+					type : "post",
+					//get方式请求后台的格式设置
+					//contentType : "application/json;charset=UTF-8",
+					//post方式请求后台的格式设置
+					contentType : "application/x-www-form-urlencoded",
+					beforeSend : function(request) {
+						request.setRequestHeader("userid", userid);
+					},
+					async : false,
+					xhrFields : {
+						withCredentials : true
+					},
+					//是否需要缓冲
+					cache : false,
+					//成功的回调函数
+					success : function(data) {
+						console.log(data)
+						//alert("请求成功" + data.student2.name)
+						if (data.flag) {
+							alert("您还未登录，请登录")
+							$(location).attr("href", "login.html");
+						}
+						;
+
+						var tbody = "";
+						if (data.p_id != $("#inputid").val()) {
+							alert("无此门票信息")
+							$(location).attr("href", "index.html");
+						} else {
+							for (var i = 0; i < 10; i++) {
+								if (i != 0) {
+									tbody += '<tr><td style="height:51px"></td><td></td><td></td><td></td><td></td></tr>';
+								} else {
+									tbody += '<tr><td>'
+											+ data.p_id
+											+ '</td><td>'
+											+ data.p_type
+											+ '</td><td>'
+											+ data.p_price
+											+ '</td><td>'
+											+ data.p_number
+											+ '</td><td><input style="width:50px" type="text" id="num'
+											+ i + '" onblur="checknum(' + i
+											+ ')" onkeyup="checknum(' + i
+											+ ')"/></td></tr>';
+								}
+							}
+						}
+						$("#tb").html(tbody);
+					},
+					//报错的回调函数
+					error : function(request) {
+						alert("服务器加载中......")
+					}
+				})
+	}
 </script>
 
 </html>

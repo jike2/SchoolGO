@@ -202,7 +202,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<SalesRecord> list = new ArrayList<SalesRecord>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select * from sales_record where s_addnumber=0 and s_worker=? limit ?,?";
+			String sql = "select * from sales_record where s_worker=? limit ?,?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, w_id);
 			ps.setInt(2, (page-1)*limit);
@@ -468,7 +468,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<SalesRecord> list = new ArrayList<SalesRecord>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select * from sales_record";
+			String sql = "select * from sales_record where  s_addnumber=0";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -532,7 +532,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),day(s_date),SUM(s_number),SUM(s_money) from sales_record GROUP BY year(s_date) ,month(s_date),day(s_date)";
+			String sql = "select year(s_date),month(s_date),day(s_date),SUM(s_number),SUM(s_money) from sales_record  where  s_addnumber=0 GROUP BY year(s_date) ,month(s_date),day(s_date)";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -556,7 +556,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),day(s_date),SUM(s_number),SUM(s_money) from sales_record GROUP BY year(s_date) ,month(s_date),day(s_date) limit ?,?";
+			String sql = "select year(s_date),month(s_date),day(s_date),SUM(s_number),SUM(s_money) from sales_record where  s_addnumber=0 GROUP BY year(s_date) ,month(s_date),day(s_date) limit ?,?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, (page-1)*limit);
 			ps.setInt(2, limit);
@@ -582,7 +582,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record GROUP BY year(s_date) ,month(s_date)";
+			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where  s_addnumber=0 GROUP BY year(s_date) ,month(s_date)";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -606,7 +606,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record GROUP BY year(s_date) ,month(s_date) limit ?,?";
+			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where  s_addnumber=0 GROUP BY year(s_date) ,month(s_date) limit ?,?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, (page-1)*limit);
 			ps.setInt(2, limit);
@@ -632,7 +632,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select price_id,SUM(s_number) from sales_record where s_date like '"+date+"%' GROUP BY price_id";
+			String sql = "select price_id,SUM(s_number) from sales_record where s_addnumber=0 and s_date like '"+date+"%' GROUP BY price_id";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -655,7 +655,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select price_id,SUM(s_number) from sales_record where s_date like '"+date+"%' GROUP BY price_id limit ?,?";
+			String sql = "select price_id,SUM(s_number) from sales_record where s_addnumber=0 and s_date like '"+date+"%' GROUP BY price_id limit ?,?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, (page-1)*limit);
 			ps.setInt(2, limit);
@@ -680,7 +680,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where s_worker=? GROUP BY year(s_date) ,month(s_date)";
+			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where s_addnumber=0 and s_worker=? GROUP BY year(s_date) ,month(s_date)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, w_id);
 			rs = ps.executeQuery();
@@ -705,7 +705,7 @@ public class SalesRecordImpl implements ISalesRecord{
 		List<Census> list = new ArrayList<Census>();
 		try {
 			conn = JDBCUtils.getConn();
-			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where s_worker=? GROUP BY year(s_date) ,month(s_date) limit ?,?";
+			String sql = "select year(s_date),month(s_date),SUM(s_number),SUM(s_money) from sales_record where s_addnumber=0 and s_worker=? GROUP BY year(s_date) ,month(s_date) limit ?,?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, w_id);
 			ps.setInt(2, (page-1)*limit);

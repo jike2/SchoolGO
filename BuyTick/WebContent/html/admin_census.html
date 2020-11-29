@@ -47,7 +47,7 @@
 				<button style="float: left;margin-left: 5px" onclick="admincensusBydate(1)" class="btn btn-success">按日期统计</button>
 				<input style="float: left;margin-left: 35px;height: 34px" type="month"  id="censusmonth" placeholder="请输入月份">
 				<button style="float: left;margin-left: 5px" onclick="admincensusBymonth(1)" class="btn btn-success">按月份统计</button>
-				<input style="float: left;margin-left: 35px;height: 34px" type="text"  id="censusworker" placeholder="请输入工号">
+				<input style="float: left;margin-left: 35px;height: 34px" type="text"  id="censusworker"  maxlength="12" size="15" name="username" id="username" onkeyup="value=value.replace(/[\W]/g,'')" placeholder="请输入工号">
 				<button style="float: left;margin-left: 5px" onclick="censalesByWorkerdate(1)" class="btn btn-success">员工日销售情况</button>
 				<button style="float: left;margin-left: 5px" onclick="censalesByWorkermonth(1)" class="btn btn-success">员工月销售情况</button>
 				</th>

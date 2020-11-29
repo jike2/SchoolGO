@@ -64,7 +64,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th><input type="text" id="inputid" placeholder="请输入订单编号"></th>
+				<th><input type="text" id="inputid" onkeyup="this.value=this.value.replace(/\D/g,'')" placeholder="请输入订单编号"></th>
 				<th><button onclick="findMySaleByID(1)" class="btn btn-success">查询</button></th>
 			</tr>
 			<tr>

@@ -39,7 +39,6 @@ public class SalesRecordServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String method = request.getParameter("method");
-		System.out.println(method);
 		if(method.equals("querySaleAll")) {
 			this.querySaleAll(request,response);
 		}else if(method.equals("querySaleByID")){
@@ -321,7 +320,6 @@ public class SalesRecordServlet extends HttpServlet {
 		int pages = Integer.parseInt(page);
 		
 		String date = request.getParameter("date");
-		System.out.println(date);
 		List<Census> listall = srs.admincensusBydate(date);
 		int limit = 10;
 		int count =0;

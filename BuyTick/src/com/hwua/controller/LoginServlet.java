@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 
 		Worker worker = ws.login(username);
 		if(worker!=null) {
-			if(worker.getW_position().equals("管理员")) {
+			if(worker.getW_position().equals("管理员") || worker.getW_position().equals("超级管理员")) {
 				if(worker.getW_pwd().equals(password)) {
 					String sessionid = request.getSession().getId();
 					Map<String,Object> map = new HashMap<String, Object>();

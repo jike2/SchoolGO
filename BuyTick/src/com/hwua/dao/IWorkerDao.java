@@ -10,9 +10,9 @@ public interface IWorkerDao {
 	
 	public boolean upWorker(Worker worker);
 	
-	public List<Worker> quertWorkerAll();//查询全部员工
+	public List<Worker> quertWorkerAll(int permissions);//查询全部员工
 	
-	public List<Worker> quertWorkerpage(int page,int limit);//查询全部员工(分页)
+	public List<Worker> quertWorkerpage(int permissions,int page,int limit);//查询全部员工(分页)
 	
 	public List<Worker> findWorkByID(String find);//根据工号或者姓名查询员工
 	
