@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.SellrecordsDao">
+	<delete id="deletesell" parameterType="long">
+		delete from sellrecords
+		where sellID=#{sellID}
+	</delete>
+	<resultMap type="com.hwua.pojo.Goods" id="goodsmap">
+		<result property="goodImg" column="goodImg" />
+		<result property="goodName" column="goodName" />
+		<result property="goodAbout" column="goodAbout" />
+	</resultMap>
+	<resultMap type="com.hwua.pojo.UserAddr" id="userAddrmap">
+		<result property="useradProvinces" column="useradProvinces" />
+		<result property="useradCity" column="useradCity" />
+		<result property="useradSchool" column="useradSchool" />
+		<result property="useradDetailed" column="useradDetailed" />
+		<result property="useradName" column="useradName" />
+		<result property="useradTell" column="useradTell" />
+	</resultMap>
+	<resultMap type="com.hwua.pojo.Sellrecords" id="sellmaps">
+		<result property="sellID" column="sellID" />
+		<result property="sellgoodID" column="sellgoodID" />
+		<result property="sellMoney" column="sellMoney" />
+		<result property="sellNumber" column="sellNumber" />
+		<result property="sellalipayid" column="sellalipayid" />
+		<result property="sellCouriernumber" column="sellCouriernumber" />
+		<result property="sellOrdertime" column="sellOrdertime" />
+		<result property="sellState" column="sellState" />
+		<result property="selluserName" column="selluserName" />
+		<result property="sellBuyer" column="sellBuyer" />
+
+		<association property="goods"
+			javaType="com.hwua.pojo.Goods" resultMap="goodsmap" />
+		<association property="useraddr"
+			javaType="com.hwua.pojo.UserAddr" resultMap="userAddrmap" />
+	</resultMap>
+	<select id="querymysell" parameterType="sellrecords"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,s.sellCouriernumber,s.sellOrdertime,s.sellState,s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID and
+		<if test="sellBuyer !=null and sellBuyer !=''">
+			s.sellBuyer=#{sellBuyer}
+		</if>
+		<if test="sellalipayid !=null and sellalipayid !=''">
+			s.sellalipayid=#{sellalipayid}
+		</if>
+	</select>
+	<update id="upsell" parameterType="sellrecords">
+		update sellrecords set
+			sellState = #{sellState}
+		<if test="selladdr !=null and selladdr !=''">
+			,selladdr = #{selladdr}
+		</if>
+		<if test="sellCouriernumber !=null and sellCouriernumber !=''">
+			,sellCouriernumber=#{sellCouriernumber}
+		</if>
+		where
+		<if test="sellID !=null and sellID !=''">
+			sellID=#{sellID}
+		</if>
+		<if test="sellalipayid !=null and sellalipayid !=''">
+			sellalipayid=#{sellalipayid}
+		</if>
+
+	</update>
+	<insert id="paygood" parameterType="java.util.ArrayList">
+		insert into
+		sellrecords(sellID,sellgoodID,sellNumber,sellMoney,selluserName,sellBuyer,sellState,sellalipayid,sellOrdertime,selladdr)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.sellID},#{item.sellgoodID},#{item.sellNumber},#{item.sellMoney},#{item.selluserName},#{item.sellBuyer},#{item.sellState},#{item.sellalipayid},#{item.sellOrdertime},#{item.selladdr})
+		</foreach>
+	</insert>
+
+	<select id="querymysellbysellstate" parameterType="string"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,s.sellCouriernumber,s.sellOrdertime,s.sellState,s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID and
+		s.sellBuyer=#{username}
+		<if test="State != null and State != ''">
+			and s.sellState like '%${State}%'
+		</if>
+		GROUP BY s.sellOrdertime DESC
+	</select>
+	<select id="querymyshopsellbysellstate" parameterType="string"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,s.sellCouriernumber,s.sellOrdertime,s.sellState,s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID and
+		s.selluserName=#{username}
+		<if test="State != null and State != ''">
+			and s.sellState like '%${State}%'
+		</if>
+		GROUP BY s.sellOrdertime DESC
+	</select>
+	<select id="querymysellbysellid" parameterType="long"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,s.sellCouriernumber,s.sellOrdertime,s.sellState,s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID and
+		s.sellID=#{sellid}
+	</select>
+	<select id="queryAllsellrecord"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,s.sellCouriernumber,s.sellOrdertime,s.sellState,s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID
+	</select>
+	<select id="queryallsellrecordbyname" parameterType="string"
+		resultMap="sellmaps">
+		select
+		s.sellID,s.sellgoodID,s.sellMoney,s.sellNumber,s.sellalipayid,
+		s.sellCouriernumber,s.sellOrdertime,s.sellState,
+		s.selluserName,s.sellBuyer,g.goodImg,g.goodName,g.goodAbout,u.useradProvinces,u.useradCity,
+		u.useradSchool,u.useradDetailed,u.useradName,u.useradTell from
+		sellrecords s,goods g,useraddr u
+		where s.sellgoodID=g.goodID and
+		s.selladdr=u.useradID
+		and CONCAT(IFNULL(`sellID`,''),IFNULL(`selluserName`,''),IFNULL(`sellBuyer`,''),IFNULL(`goodName`,''),IFNULL(`useradProvinces`,''),IFNULL(`useradCity`,''),IFNULL(`useradSchool`,''))  LIKE '%${queryname}%'
+	</select>
+</mapper>

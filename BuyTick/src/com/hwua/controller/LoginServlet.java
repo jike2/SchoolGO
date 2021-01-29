@@ -32,7 +32,16 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {
 		super();
 	}
-
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+		response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTTIONS,DELETE");
+		response.setHeader("Access-Control-Allow-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Authentication,x-request-with,Content-Type,Accept,userid");
+		response.setHeader("Access-Control-Allow-Credentials", "true");//是否支持cookie
+		response.setHeader("Access-Control-Expose-Headers", "userid");
+		response.setStatus(202);
+	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String method = request.getParameter("method");
 		if(method.equals("login")){
@@ -40,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 		}else if(method.equals("loginadmin")) {
 			this.loginadmin(request,response);
 		}
-
+		request.getSession().setAttribute("list", 111);
 	}
 
 
@@ -50,6 +59,11 @@ public class LoginServlet extends HttpServlet {
 	}
 	//管理员登录
 	private void loginadmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+		response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTTIONS,DELETE");
+		response.setHeader("Access-Control-Allow-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Authentication,x-request-with,Content-Type,Accept,userid");
+		response.setHeader("Access-Control-Allow-Credentials", "true");//是否支持cookie
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
@@ -66,11 +80,11 @@ public class LoginServlet extends HttpServlet {
 					map.put("id", 0);//0是登录失败
 					response.getWriter().write(JSON.toJSONString(map));
 				}
-				}else {
-					Map<String,Object> map = new HashMap<String, Object>();
-					map.put("id", 0);//0是登录失败
-					response.getWriter().write(JSON.toJSONString(map));
-				}
+			}else {
+				Map<String,Object> map = new HashMap<String, Object>();
+				map.put("id", 0);//0是登录失败
+				response.getWriter().write(JSON.toJSONString(map));
+			}
 		}else {
 			Map<String,Object> map = new HashMap<String, Object>();
 			map.put("id", 0);//0是登录失败
@@ -80,9 +94,15 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+		response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTTIONS,DELETE");
+		response.setHeader("Access-Control-Allow-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Authentication,x-request-with,Content-Type,Accept,userid");
+		response.setHeader("Access-Control-Allow-Credentials", "true");//是否支持cookie
+		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-
+		System.out.println(username+"========"+password);
 		Worker worker = ws.login(username);
 		if(worker!=null) {
 			if(worker.getW_pwd().equals(password)) {

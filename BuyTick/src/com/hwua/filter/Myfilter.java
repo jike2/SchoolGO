@@ -30,12 +30,12 @@ public class Myfilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
 		response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTTIONS,DELETE");
 		response.setHeader("Access-Control-Allow-Age", "3600");
-		response.setHeader("Access-Control-Allow-Header", "x-request-with");
+		response.setHeader("Access-Control-Allow-Headers", "Authentication,x-request-with,Content-Type,Accept,userid");
 		response.setHeader("Access-Control-Allow-Credentials", "true");//是否支持cookie
-		
+		response.setHeader("Access-Control-Expose-Headers", "userid");
 		
 		String userid = request.getHeader("userid");
 		if(userid !=null && userid != "") {

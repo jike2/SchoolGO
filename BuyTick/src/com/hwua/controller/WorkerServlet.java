@@ -26,7 +26,16 @@ public class WorkerServlet extends HttpServlet {
 	public WorkerServlet() {
 		super();
 	}
-
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+		response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTTIONS,DELETE");
+		response.setHeader("Access-Control-Allow-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Authentication,x-request-with,Content-Type,Accept,userid");
+		response.setHeader("Access-Control-Allow-Credentials", "true");//是否支持cookie
+		response.setHeader("Access-Control-Expose-Headers", "userid");
+		response.setStatus(202);
+	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String method = request.getParameter("method");
 		if(method.equals("finMyPerInfo")) {
