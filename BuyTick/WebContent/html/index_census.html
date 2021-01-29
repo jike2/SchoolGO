@@ -156,8 +156,7 @@
 			$("#re").val(bt);
 		}
 		var page = parseInt($("#re").val());
-		$
-				.ajax({
+		$.ajax({
 					url : "http://localhost:8080/BuyTick/SalesRecordServlet.do?method=censusMsalesAll",
 					dataType : "json",
 					type : "post",
@@ -195,8 +194,7 @@
 								ul += '<li id="pag'+j+'"><a href="javascript:censusMsalesAll('
 										+ j + ');">' + j + '</a></li>';
 							}
-						}
-						;
+						};
 						ul += '<li id="ne" value="'+data.count+'"><a href="javascript:censusMsalesAll(-1);">&raquo;</a></li>';
 						$("#pag").html(ul);
 

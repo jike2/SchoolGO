@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.AddrDao">
+	<select id="queryAddr" resultType="addr">
+		SELECT * FROM addr GROUP BY addrProvinces
+	</select>
+	<select id="querygoodtype" resultType="goodstype">
+		SELECT * FROM goodstype GROUP BY typeOne
+	</select>
+	<select id="querygoodtypebytypeOne" parameterType="string" resultType="goodstype">
+		SELECT * FROM goodstype where typeOne=#{typeOne}
+	</select>
+	<select id="screeningaddr" parameterType="string" resultType="addr">
+		SELECT * FROM addr where addrProvinces=#{goodProvinces} GROUP BY addrCity
+	</select>
+	
+	<select id="queryschool" parameterType="string" resultType="addr">
+		SELECT * FROM addr where addrCity=#{addrCity}
+	</select>
+</mapper>

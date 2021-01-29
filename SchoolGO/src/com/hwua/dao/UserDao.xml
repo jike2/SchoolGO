@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.UserDao">
+	<sql id="user_colm">
+		select * from user
+	</sql>
+	<select id="login" parameterType="string" resultType="com.hwua.pojo.User">
+		<include refid="user_colm"></include>
+		<where>
+			userTell=#{username} or userEmail=#{username} and
+			userPassword=#{password}
+		</where>
+	</select>
+	<select id="checkregister" parameterType="com.hwua.pojo.User" resultType="int">
+		select count(*) from user
+		<where>
+			<if test="userName != null and userName != ''">
+				or userName=#{userName}
+			</if>
+			<if test="userTell != null and userTell != ''">
+				or userTell=#{userTell}
+			</if>
+			<if test="userEmail != null and userEmail != ''">
+				or userEmail=#{userEmail}
+			</if>
+		</where>
+	</select>
+	<select id="queryAlluser" resultType="com.hwua.pojo.User">
+		<include refid="user_colm"></include>
+	</select>
+	<insert id="register" parameterType="com.hwua.pojo.User">
+		insert into
+		user(userID,userName,userTell,userEmail,userPassword,userRegistertime,userState)
+		values(#{userID},#{userName},#{userTell},#{userEmail},#{userPassword},#{userRegistertime},#{userState})
+	</insert>
+	<select id="queryuserbyname" parameterType="string" resultType="com.hwua.pojo.User">
+		<include refid="user_colm"></include>where userName=#{userName}
+	</select>
+	<select id="querycanuseuser" parameterType="string" resultType="com.hwua.pojo.User">
+		<include refid="user_colm"></include>where userState=#{userState}
+		<if test="query != null and query != ''">
+		and CONCAT(IFNULL(`userName`,''),IFNULL(`userTell`,''),IFNULL(`userEmail`,''),IFNULL(`userAddr`,''),IFNULL(`userRealname`,'')) LIKE '%${query}%' 
+		</if>
+	</select>
+	<update id="upuserState" parameterType="user">
+		update user set userID=#{userID}
+		<if test="userName !=null and userName != ''">
+			,userName=#{userName}
+		</if>
+		<if test="userBirthday !=null and userBirthday != ''">
+			,userBirthday=#{userBirthday}
+		</if>
+		<if test="userGender !=null and userGender != ''">
+			,userGender=#{userGender}
+		</if>
+		<if test="userTell !=null and userTell != ''">
+			,userTell=#{userTell}
+		</if>
+		<if test="userEmail !=null and userEmail != ''">
+			,userEmail=#{userEmail}
+		</if>
+		<if test="userPassword !=null and userPassword != ''">
+			,userPassword=#{userPassword}
+		</if>
+		<if test="userAddr !=null and userAddr != ''">
+			,userAddr=#{userAddr}
+		</if>
+		<if test="userHeadimg !=null and userHeadimg != ''">
+			,userHeadimg=#{userHeadimg}
+		</if>
+		<if test="userState !=null and userState != ''">
+			,userState=#{userState}
+		</if>
+		<if test="userEmpID !=null and userEmpID != ''">
+			,userEmpID=#{userEmpID}
+		</if>
+		<if test="userCause !=null and userCause != ''">
+			,userCause=#{userCause}
+		</if>
+		<if test="userRealname !=null and userRealname != ''">
+			,userRealname=#{userRealname}
+		</if>
+		<if test="userIdnumber !=null and userIdnumber != ''">
+			,userIdnumber=#{userIdnumber}
+		</if>
+		<if test="alipaynumber !=null and alipaynumber != ''">
+			,alipaynumber=#{alipaynumber}
+		</if>
+		where userID=#{userID}
+	</update>
+</mapper>

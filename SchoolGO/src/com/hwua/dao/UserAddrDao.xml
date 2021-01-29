@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.UserAddrDao">
+	<sql id="useraddr_colm">
+		select * from useraddr
+	</sql>
+	<select id="queryUserAddrs" parameterType="int" resultType="com.hwua.pojo.UserAddr">
+		<include refid="useraddr_colm"></include>
+		where useradUserID=#{userid}
+	</select>
+		
+	
+</mapper>

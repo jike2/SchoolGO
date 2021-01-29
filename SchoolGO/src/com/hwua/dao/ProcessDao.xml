@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.ProcessDao">
+	
+	<insert id="addprocess" parameterType="process">
+		insert into processing(propid,prosid,prorefunmoney,prorefundcause,proimg,prostate) values(NULL,#{prosid},#{prorefunmoney},#{prorefundcause},#{proimg},#{Prostate})
+	</insert>
+	<select id="querymyrefundsell" parameterType="long" resultType="process">
+		select * from processing where prosid=#{prosid}
+	</select>
+	<update id="uppro" parameterType="process">
+	update processing set prostate=#{prostate}
+	<if test="prorefused != null and prorefused != ''">
+	,prorefused=#{prorefused}
+	</if>
+	<if test="proempid != null and proempid != ''">
+	,proempid=#{proempid}
+	</if>
+	<if test="proempcause != null and proempcause != ''">
+	,proempcause=#{proempcause}
+	</if>
+	where prosid=#{prosid}
+	</update>
+</mapper>

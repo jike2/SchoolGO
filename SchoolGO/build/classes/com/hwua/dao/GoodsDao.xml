@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwua.dao.GoodsDao">
+	<sql id="goods_colm">
+		select * from goods
+	</sql>
+	<!-- 根据城市查询 -->
+	<select id="queryindex" parameterType="string"
+		resultType="goods">
+		<include refid="goods_colm"></include>
+		<where>
+			goodState='上架' and goodType=#{goodname}
+		</where>
+	</select>
+	<!-- 根据id查询 -->
+	<select id="querybyid" parameterType="int" resultType="goods">
+		<include refid="goods_colm"></include>
+		where goodID=#{goodsID} and goodState='上架'
+	</select>
+	<select id="querybyidAll" parameterType="int" resultType="goods">
+		<include refid="goods_colm"></include>
+		where goodID=#{goodsID}
+	</select>
+
+	<update id="upgood" parameterType="goods">
+		update goods set
+		goodName=#{goodName},goodPrice=#{goodPrice},goodNumber=#{goodNumber},
+		goodImg=#{goodImg},goodAbout=#{goodAbout},goodType=#{goodType},goodRecleaner=#{goodRecleaner},goodProvinces=#{goodProvinces},
+		goodCity=#{goodCity},goodSchool=#{goodSchool},gooduserName=#{gooduserName},goodState=#{goodState},goodSubtime=#{goodSubtime},
+		goodEmpID=#{goodEmpID},goodShelftime=#{goodShelftime}
+		where
+		goodID=#{goodID}
+	</update>
+	<insert id="addgood" parameterType="goods">
+		insert into
+		goods(goodID,goodName,goodPrice,goodNumber,goodImg,goodAbout,goodType,
+		goodRecleaner,goodProvinces,goodCity,goodSchool,gooduserName,goodState,goodSubtime)
+		values(NULL,#{goodName},#{goodPrice},#{goodNumber},#{goodImg},#{goodAbout},#{goodType},
+		#{goodRecleaner},#{goodProvinces},#{goodCity},#{goodSchool},#{gooduserName},#{goodState},
+		#{goodSubtime})
+	</insert>
+
+	<select id="querybynamecount" resultType="int">
+		select count(*) from goods where
+		CONCAT(`goodName`,`goodAbout`,`goodType`,`goodRecleaner`,`goodProvinces`,`goodCity`,`goodSchool`,`gooduserName`)
+		LIKE '%${querygoodname}%'
+		<if test="addr.addrProvinces != null and addr.addrProvinces != ''">
+			and goodProvinces=#{addr.addrProvinces}
+		</if>
+		<if test="addr.addrCity != null and addr.addrCity != ''">
+			and goodCity=#{addr.addrCity}
+		</if>
+		<if test="addr.addrSchool != null and addr.addrSchool != ''">
+			and goodSchool=#{addr.addrSchool}
+		</if>
+	</select>
+	<select id="querybyname" resultType="goods">
+		select * from goods where
+		CONCAT(`goodName`,`goodAbout`,`goodType`,`goodRecleaner`,`goodProvinces`,`goodCity`,`goodSchool`,`gooduserName`)
+		LIKE '%${querygoodname}%'
+		<if test="addr.addrProvinces != null and addr.addrProvinces != ''">
+			and goodProvinces=#{addr.addrProvinces}
+		</if>
+		<if test="addr.addrCity != null and addr.addrCity != ''">
+			and goodCity=#{addr.addrCity}
+		</if>
+		<if test="addr.addrSchool != null and addr.addrSchool != ''">
+			and goodSchool=#{addr.addrSchool}
+		</if>
+		limit #{page},#{limit}
+	</select>
+	<select id="querymygoodbygoodstate" parameterType="string" resultType="goods">
+		<include refid="goods_colm"></include>
+		where gooduserName=#{userName} and goodState like '%${goodstate}%'
+	</select>
+	<delete id="delmygood" parameterType="int">
+		delete from goods where goodID=#{delgoodID}
+	</delete>
+	
+	<select id="queryautogood" resultType="goods">
+		<include refid="goods_colm"></include>
+		where goodState=#{goodState} and goodPrice BETWEEN #{goodPricestart} AND #{goodPricefinish}
+	</select>
+	<select id="queryautogoodbyname" resultType="goods">
+		<include refid="goods_colm"></include>
+		where goodState=#{goodState} and CONCAT(`goodName`,`goodAbout`,`goodType`,`goodRecleaner`,`goodProvinces`,`goodCity`,`goodSchool`,`gooduserName`) like '%${queryname}%' and goodPrice BETWEEN #{goodPricestart} AND #{goodPricefinish}
+	</select>
+	<select id="queryallgoodbystate" parameterType="string" resultType="goods">
+		<include refid="goods_colm"></include>
+		where goodState=#{goodState}
+	</select>
+	<select id="queryordergoodsbynameAll" parameterType="string" resultType="goods">
+		select * from goods where
+		CONCAT(`goodName`,`goodAbout`,`goodType`,`goodRecleaner`,`goodProvinces`,`goodCity`,`goodSchool`,`gooduserName`)
+		LIKE '%${querygoodname}%' and goodState=#{goodStete}
+	</select>
+</mapper>
