@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class RefunsedGood {
 
-	private int RefID;
-	private int RefgoodID;
-	private String RefgoodCause;
-	private int RefempID;
-	private Date Reftime;
+	private int RefID;//处理编号
+	private int RefgoodID;//商品编号
+	private String RefgoodCause;//未通过原因
+	private int RefempID;//处理人id
+	private Date Reftime;//处理时间
 	public int getRefID() {
 		return RefID;
 	}

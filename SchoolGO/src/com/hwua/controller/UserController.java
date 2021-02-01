@@ -172,12 +172,25 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/upmyself",method=RequestMethod.POST,produces = "application/json;charset=UTF-8")
-	public @ResponseBody String upmyself(@RequestParam("file") MultipartFile[] file,User user,HttpServletRequest request)
+	public @ResponseBody String upmyself(@RequestParam("file") MultipartFile file,User user,HttpServletRequest request)
 			throws IOException {
 		System.out.println("进来了");
 		Map<String,Object> map = new HashMap<String, Object>();
 		System.out.println("这个file文件："+file);
-		System.out.println(user+file.toString());
-		return map.toString();
+		String headimg=user.getUserName()+"header.jpg";
+		file.transferTo(new File("E:\\2020年实训\\毕业设计\\校园GO电子商城\\web\\images",headimg));
+		user.setUserHeadimg(headimg);
+		System.out.println("修改后的用户："+user);
+		boolean b = userService.upuserState(user);
+		if(b) {
+			User login = userService.queryuserbyname(user.getUserName());
+			System.out.println(login);
+			map.put("user", login);
+			map.put("flag", true);
+		}else {
+			map.put("flag", false);
+			map.put("msg", "修改失败");
+		}
+		return JSON.toJSONString(map);
 	}
 }

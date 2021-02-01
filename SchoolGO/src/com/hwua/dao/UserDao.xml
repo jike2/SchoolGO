@@ -48,7 +48,7 @@
 		<if test="userName !=null and userName != ''">
 			,userName=#{userName}
 		</if>
-		<if test="userBirthday !=null and userBirthday != ''">
+		<if test="userBirthday !=null">
 			,userBirthday=#{userBirthday}
 		</if>
 		<if test="userGender !=null and userGender != ''">

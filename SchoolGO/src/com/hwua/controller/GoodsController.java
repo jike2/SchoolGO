@@ -78,7 +78,7 @@ public class GoodsController {
 
 	@Autowired
 	private UserService userservice;
-	
+
 	@Autowired
 	private RefunsedGoodDao refunsed;
 	@Autowired
@@ -138,17 +138,17 @@ public class GoodsController {
 		//将订单信息插入订单表
 		Map<String, Object> map = goodsService.paygood(list);
 		//如果是购物车购买，在购买完成后删除购物车中对应商品
-			for(int i=0;i<list.size();i++) {
-				String shopid=String.valueOf(list.get(i).getSellgoodID());
-				List<Shoppingcar> carlist = shoppingcarService.querymycar(list.get(i).getSellBuyer());
-				for(int j=0;j<carlist.size();j++) {
-					String carshopid = String.valueOf(carlist.get(j).getShopID());
-					if(shopid.equals(carshopid)) {
-						shoppingcarService.delcargood(carlist.get(j).getSid());
-					}
+		for(int i=0;i<list.size();i++) {
+			String shopid=String.valueOf(list.get(i).getSellgoodID());
+			List<Shoppingcar> carlist = shoppingcarService.querymycar(list.get(i).getSellBuyer());
+			for(int j=0;j<carlist.size();j++) {
+				String carshopid = String.valueOf(carlist.get(j).getShopID());
+				if(shopid.equals(carshopid)) {
+					shoppingcarService.delcargood(carlist.get(j).getSid());
 				}
-
 			}
+
+		}
 		String sellName = (String) map.get("sellName");
 		if(map.get("flag").equals(true)) {
 			System.out.println("插入成功，开始跳转支付宝界面");
@@ -194,31 +194,39 @@ public class GoodsController {
 	public @ResponseBody String updateUserPostsImage(@RequestParam("file") MultipartFile[] file,Goods good,HttpServletRequest request)
 			throws IOException {
 		Map<String,Object> map = new HashMap<String, Object>();
-//		User user = userservice.queryuserbyname(good.getGooduserName());
-		String img=null;
-		//循环下载图片
-		for(int i=0;i<file.length;i++) {
-			Date date = new Date();
-			long time = date.getTime();
-			String imgs=time+".jpg";
-			if(i==0) {
-				img=imgs;
-			}else {
-				img=img+","+imgs;
-			}
-			//			String newFileName = UUID.randomUUID() + file[i].getOriginalFilename();
-			file[i].transferTo(new File("E:\\2020年实训\\毕业设计\\校园GO电子商城\\web\\images",imgs));
-		}
-		good.setGoodImg(img);
-		//开始上架商品
-		boolean addgood = goodsService.addgood(good);
-		map.put("flag", addgood);
-		if(addgood) {
-			map.put("flag", true);
-			map.put("msg", "上架成功");
-		}else {
+		User myuser = userservice.queryuserbyname(good.getGooduserName());
+		System.out.println(myuser);
+		if(myuser.getAlipaynumber()==null || myuser.getUserRealname()==null || myuser.getUserIdnumber()==null || myuser.getUserAddr()==null) {
 			map.put("flag", false);
-			map.put("msg", "上架失败，请联系管理员");
+			map.put("msg", "信息未完善，请完善个人信息");
+		}else {
+			System.out.println("进来了");
+			//		User user = userservice.queryuserbyname(good.getGooduserName());
+			String img=null;
+			//循环下载图片
+			for(int i=0;i<file.length;i++) {
+				Date date = new Date();
+				long time = date.getTime();
+				String imgs=time+".jpg";
+				if(i==0) {
+					img=imgs;
+				}else {
+					img=img+","+imgs;
+				}
+				//			String newFileName = UUID.randomUUID() + file[i].getOriginalFilename();
+				file[i].transferTo(new File("E:\\2020年实训\\毕业设计\\校园GO电子商城\\web\\images",imgs));
+			}
+			good.setGoodImg(img);
+			//开始上架商品
+			boolean addgood = goodsService.addgood(good);
+			map.put("flag", addgood);
+			if(addgood) {
+				map.put("flag", true);
+				map.put("msg", "提交成功，等待管理员审核");
+			}else {
+				map.put("flag", false);
+				map.put("msg", "提交失败，请联系管理员");
+			}
 		}
 		return JSON.toJSONString(map);
 	}
@@ -540,7 +548,7 @@ public class GoodsController {
 				subList = goodlist.subList((page-1)*limit,goodlist.size());
 			}
 		}
-		
+
 		map.put("total", count);
 		map.put("data", subList);
 		return JSON.toJSONString(map);
@@ -548,7 +556,7 @@ public class GoodsController {
 	@RequestMapping(value="/queryallupgood" ,method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
 	public @ResponseBody String queryallupgood(int page,int limit,String query) {
 		Map<String,Object> map = new HashMap<String, Object>();
-//		goodsService.queryallgoodbystate("")
+		//		goodsService.queryallgoodbystate("")
 		System.out.println(page+"=========="+limit+"=========="+query);
 		List<Goods> list = goodsService.queryallgoodbystate(query);
 		List<Goods> subList = new ArrayList<Goods>();
@@ -647,7 +655,7 @@ public class GoodsController {
 	public @ResponseBody String queryordergoodsbynameAll(int page,int limit,String query) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		System.out.println(page+"=============="+limit+"=============="+query);
-		
+
 		List<Goods> list = goodsService.queryordergoodsbynameAll(query, "上架");
 		List<Goods> subList = new ArrayList<Goods>();
 		if(list.size()<limit) {
