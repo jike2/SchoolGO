@@ -11,5 +11,7 @@ public interface UserAddrDao {
 
 	public List<UserAddr> queryUserAddrs(@Param("userid")int userid);
 	
+	public int addrnewuseraddr(UserAddr addr);
 	
+	public int upuseraddr(UserAddr addr);
 }

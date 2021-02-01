@@ -1,5 +1,6 @@
 package com.hwua.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.hwua.pojo.Addr;
 import com.hwua.pojo.Goods;
 import com.hwua.pojo.Goodstype;
+import com.hwua.pojo.UserAddr;
 import com.hwua.service.AddrService;
 import com.hwua.service.GoodsService;
 import com.hwua.service.UserAddrService;
@@ -70,5 +72,55 @@ public class AddrController {
 	public @ResponseBody String queryschool(String addrCity) {
 		List<Addr> list = addrService.queryschool(addrCity);
 		return JSON.toJSONString(list);
+	}
+	@RequestMapping(value="/queryaddnewaddr" ,method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
+	public @ResponseBody String queryaddnewaddr(Addr addr) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		List<Addr> list = new ArrayList<Addr>();
+		if(addr.getAddrProvinces().equals("") || addr.getAddrProvinces().equals(null)) {
+			list = addrService.queryAddr();
+		}else if(addr.getAddrCity().equals("") || addr.getAddrCity().equals(null)) {
+			list = addrService.screeningaddr(addr.getAddrProvinces());
+		}else {
+			list = addrService.queryschool(addr.getAddrCity());
+		}
+		map.put("data", list);
+		return JSON.toJSONString(map);
+	}
+	@RequestMapping(value="/addnewuseraddr" ,method=RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	public @ResponseBody String addnewuseraddr(@RequestBody UserAddr addr) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		System.out.println("传回来的数据"+addr);
+		if(addr.getUseradProvinces().equals("") || addr.getUseradCity().equals("") || addr.getUseradSchool().equals("") || addr.getUseradDetailed().equals("") || addr.getUseradName().equals("") || addr.getUseradTell()==0) {
+			map.put("flag", false);
+			map.put("msg", "信息填写不完整");
+		}else {
+			boolean b = userAddrService.addrnewuseraddr(addr);
+			if(b) {
+				map.put("flag", true);
+			}else {
+				map.put("flag", false);
+				map.put("msg", "添加失败");
+			}
+		}
+		return JSON.toJSONString(map);
+	}
+	@RequestMapping(value="/upuseraddr" ,method=RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	public @ResponseBody String upuseraddr(@RequestBody UserAddr addr) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		System.out.println(addr);
+		if(addr.getUseradProvinces().equals("") || addr.getUseradCity().equals("") || addr.getUseradSchool().equals("") || addr.getUseradDetailed().equals("") || addr.getUseradName().equals("") || addr.getUseradTell()==0) {
+			map.put("flag", false);
+			map.put("msg", "信息填写不完整");
+		}else {
+			boolean b = userAddrService.upuseraddr(addr);
+			if(b) {
+				map.put("flag", true);
+			}else {
+				map.put("flag", false);
+				map.put("msg", "修改失败");
+			}
+		}
+		return JSON.toJSONString(map);
 	}
 }

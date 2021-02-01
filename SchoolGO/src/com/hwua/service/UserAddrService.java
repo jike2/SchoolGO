@@ -9,5 +9,7 @@ public interface UserAddrService {
 
 	public List<UserAddr> queryUserAddrs(int userid);
 	
+	public boolean addrnewuseraddr(UserAddr addr);
 	
+	public boolean upuseraddr(UserAddr addr);
 }

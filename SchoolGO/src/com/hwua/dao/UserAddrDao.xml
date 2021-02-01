@@ -9,6 +9,11 @@
 		<include refid="useraddr_colm"></include>
 		where useradUserID=#{userid}
 	</select>
-		
-	
+	<insert id="addrnewuseraddr" parameterType="useraddr">
+		insert into useraddr values(NULL,#{useradProvinces},#{useradCity},#{useradSchool},#{useradDetailed},#{useradName},#{useradTell},#{useradUserID})
+	</insert>
+	<update id="upuseraddr" parameterType="useraddr">
+		update useraddr set useradProvinces=#{useradProvinces},useradCity=#{useradCity},useradSchool=#{useradSchool},useradDetailed=#{useradDetailed},useradName=#{useradName},useradTell=#{useradTell}
+		where useradID=#{useradID}
+	</update>
 </mapper>

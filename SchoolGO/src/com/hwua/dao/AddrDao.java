@@ -16,4 +16,5 @@ public interface AddrDao {
 	public List<Addr> screeningaddr(@Param("goodProvinces") String goodProvinces);
 	
 	public List<Addr> queryschool(@Param("addrCity") String addrCity);
+
 }

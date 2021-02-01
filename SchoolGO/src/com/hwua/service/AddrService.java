@@ -18,4 +18,5 @@ public interface AddrService {
 	public List<Addr> screeningaddr(String goodProvinces);
 	
 	public List<Addr> queryschool(String addrCity);
+	
 }

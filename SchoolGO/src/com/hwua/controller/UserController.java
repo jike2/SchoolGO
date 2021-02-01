@@ -86,14 +86,7 @@ public class UserController {
 		return JSON.toJSONString(querymysell);
 	}
 
-	@RequestMapping(value = "/upmyself",method=RequestMethod.POST,produces = "application/json;charset=UTF-8")
-	public @ResponseBody String upmyself(@RequestParam("file") MultipartFile[] file,User user,HttpServletRequest request)
-			throws IOException {
-		Map<String,Object> map = new HashMap<String, Object>();
-		System.out.println("这个file文件："+file[0]);
-		System.out.println(user+file.toString());
-		return map.toString();
-	}
+	
 	@RequestMapping(value = "/querycanuseuser",method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
 	public @ResponseBody String querycanuseuser(int page,int limit,String userSate)
 			throws IOException {
@@ -176,5 +169,15 @@ public class UserController {
 			}
 		}
 		return JSON.toJSONString(map);
+	}
+	
+	@RequestMapping(value = "/upmyself",method=RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	public @ResponseBody String upmyself(@RequestParam("file") MultipartFile[] file,User user,HttpServletRequest request)
+			throws IOException {
+		System.out.println("进来了");
+		Map<String,Object> map = new HashMap<String, Object>();
+		System.out.println("这个file文件："+file);
+		System.out.println(user+file.toString());
+		return map.toString();
 	}
 }
